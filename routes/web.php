@@ -19,3 +19,8 @@ Route::get('language/{locale}', function ($locale) {
     }
     return redirect()->back();
 })->name('language.switch');
+
+Route::get('/', function () {
+    return response()->json(['status' => 'online', 'service' => 'PEK FCP API']);
+});
+

@@ -68,4 +68,15 @@ class User extends Authenticatable implements HasName, FilamentUser
     {
         return $this->hasMany(Notification::class, 'user_id');
     }
+
+    public function onboardingSession()
+    {
+        return $this->hasOne(OnboardingSession::class, 'user_id');
+    }
+
+    public function getOnboardingCompletedAttribute(): bool
+    {
+        return $this->onboardingSession()->where('status', 'completed')->exists();
+    }
 }
+

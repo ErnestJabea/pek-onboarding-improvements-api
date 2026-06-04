@@ -72,6 +72,7 @@ class AuthController extends Controller
             'nb_positions'        => $valuation['nb_positions'],
             'calcule_le'          => $valuation['calcule_le'],
             'user'                => $user,
+            'onboarding_completed'=> $user->onboarding_completed,
         ]);
     }
 

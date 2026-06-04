@@ -51,4 +51,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Valorisation en temps réel du portefeuille FCP (positions détaillées)
     Route::get('/portfolio/valuation', [AuthController::class, 'portfolioValuation']);
+
+    // Onboarding Client FCP
+    Route::get('/onboarding/status', [\App\Http\Controllers\OnboardingController::class, 'status']);
+    Route::post('/onboarding/save-progress', [\App\Http\Controllers\OnboardingController::class, 'saveProgress']);
+    Route::post('/onboarding/finalize', [\App\Http\Controllers\OnboardingController::class, 'finalize']);
 });
