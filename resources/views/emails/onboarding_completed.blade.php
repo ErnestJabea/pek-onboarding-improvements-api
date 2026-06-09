@@ -6,13 +6,13 @@
 
         Félicitations, vous avez complété avec succès votre parcours d'onboarding pour le **PLAN D'EPARGNE KORI**.
 
-        Côté serveur, notre algorithme a analysé vos réponses et a déterminé votre profil investisseur :
+        Nous avons déterminé votre profil investisseur :
         **Profil : {{ $payload['risk_profile'] ?? 'En attente' }}**
 
-        Vous trouverez en pièce jointe de cet e-mail votre **Fiche de Profil Investisseur** officielle.
+        Vous trouverez en pièce jointe de cet e-mail votre **Fiche de Profil Investisseur**.
 
         Pour finaliser définitivement l'ouverture de votre compte titres auprès de **Kori Asset Management**, veuillez
-        préparer et fournir à nos agents les justificatifs physiques suivants :
+        préparer et fournir à nos agents les justificatifs suivants :
         * Copie certifiée conforme de votre pièce d'identité en cours de validité
         ({{ $payload['piece'] ?? 'CNI/Passeport' }} n° {{ $payload['num_piece'] ?? '' }})
         * Justificatif de domicile de moins de 3 mois (facture d'eau, d'électricité ou plan de localisation)
