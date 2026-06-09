@@ -45,3 +45,12 @@ Route::middleware(['web', 'auth'])
             ->where('type', 'piece_identite|justificatif_domicile|photo|origine_fonds');
     });
 
+// Téléchargement du dossier complet (ZIP) (protégé par l'authentification Filament)
+Route::middleware(['web', 'auth'])
+    ->prefix('admin/zip')
+    ->name('admin.zip.')
+    ->group(function () {
+        Route::get('/onboarding/{session}', [PdfDownloadController::class, 'downloadZip'])
+            ->name('download');
+    });
+

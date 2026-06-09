@@ -319,6 +319,12 @@ class OnboardingSessionResource extends Resource
                                         ->columnSpan(1)
                                         ->schema([
                                             Actions::make([
+                                                FormAction::make('download_zip')
+                                                    ->label('Télécharger le dossier complet (ZIP)')
+                                                    ->icon('heroicon-o-folder-arrow-down')
+                                                    ->color('primary')
+                                                    ->url(fn (OnboardingSession $record) => route('admin.zip.download', ['session' => $record->id]))
+                                                    ->openUrlInNewTab(),
                                                 FormAction::make('download_kyc')
                                                     ->label('Télécharger la Fiche KYC')
                                                     ->icon('heroicon-o-document-arrow-down')
@@ -460,6 +466,14 @@ class OnboardingSessionResource extends Resource
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make()->label('Voir les détails'),
                     Tables\Actions\EditAction::make()->label('Uploader Documents'),
+                    TableAction::make('download_zip')
+                        ->label('Télécharger Dossier Complet (ZIP)')
+                        ->icon('heroicon-o-folder-arrow-down')
+                        ->color('primary')
+                        ->url(fn (OnboardingSession $record) => route('admin.zip.download', [
+                            'session' => $record->id,
+                        ]))
+                        ->openUrlInNewTab(),
                     TableAction::make('download_kyc')
                         ->label('Télécharger Fiche KYC')
                         ->icon('heroicon-o-document-arrow-down')
