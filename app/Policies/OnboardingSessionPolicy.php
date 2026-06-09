@@ -39,7 +39,7 @@ class OnboardingSessionPolicy
      */
     public function update(User $user, OnboardingSession $onboardingSession): bool
     {
-        return false; // Lecture seule dans le backoffice
+        return $user->hasRole('super_admin') || $user->role === 'admin' || $user->can('update_onboarding_session');
     }
 
     /**

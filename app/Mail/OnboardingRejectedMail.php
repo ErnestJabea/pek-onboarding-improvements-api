@@ -9,24 +9,22 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OnboardingMail extends Mailable
+class OnboardingRejectedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $session;
-    public $type;
     public $user;
-    public $payload;
+    public $reason;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(OnboardingSession $session, string $type)
+    public function __construct(OnboardingSession $session, string $reason)
     {
         $this->session = $session;
-        $this->type = $type;
         $this->user = $session->user;
-        $this->payload = $session->payload ?? [];
+        $this->reason = $reason;
     }
 
     /**
@@ -34,18 +32,8 @@ class OnboardingMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        if ($this->type === 'client') {
-            return new Envelope(
-                subject: 'FCP KORI SÉRÉNITÉ - Votre Profil Investisseur',
-            );
-        }
-
-        // Compliance team subject, highlighting high risk if applicable
-        $riskString = $this->session->risk_level === 'HIGH' ? '[RISQUE ÉLEVÉ]' : '[RISQUE NORMAL]';
-        $clientName = strtoupper($this->user->last_name) . ' ' . $this->user->first_name;
-
         return new Envelope(
-            subject: "Onboarding PEK - {$riskString} - Dossier de {$clientName}",
+            subject: 'PEK - Informations Complémentaires Requises',
         );
     }
 
@@ -55,7 +43,7 @@ class OnboardingMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.onboarding_completed',
+            view: 'emails.onboarding_rejected',
         );
     }
 

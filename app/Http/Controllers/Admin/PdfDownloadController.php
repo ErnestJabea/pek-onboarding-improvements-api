@@ -85,4 +85,34 @@ class PdfDownloadController extends Controller
             ['Content-Type' => 'application/pdf']
         );
     }
+
+    /**
+     * Télécharger une pièce justificative téléversée.
+     *
+     * @param \App\Models\OnboardingSession $session
+     * @param string                        $type
+     */
+    public function downloadDocument(OnboardingSession $session, string $type)
+    {
+        $session->loadMissing('user');
+
+        $allowedTypes = ['piece_identite', 'justificatif_domicile', 'photo', 'origine_fonds'];
+        if (!in_array($type, $allowedTypes)) {
+            abort(404);
+        }
+
+        $columnName = 'doc_' . $type;
+        $storagePath = $session->$columnName;
+
+        if (!$storagePath || !Storage::exists($storagePath)) {
+            abort(404);
+        }
+
+        $ext = pathinfo($storagePath, PATHINFO_EXTENSION);
+        $lastName  = $session->user->last_name  ?? 'client';
+        $firstName = $session->user->first_name ?? '';
+        $filename  = $type . '_' . $lastName . '_' . $firstName . '.' . $ext;
+
+        return Storage::download($storagePath, $filename);
+    }
 }

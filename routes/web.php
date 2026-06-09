@@ -35,3 +35,13 @@ Route::middleware(['web', 'auth'])
             ->where('type', 'kyc|risk|labft');
     });
 
+// Téléchargement des pièces justificatives (protégé par l'authentification Filament)
+Route::middleware(['web', 'auth'])
+    ->prefix('admin/document')
+    ->name('admin.document.')
+    ->group(function () {
+        Route::get('/onboarding/{session}/{type}', [PdfDownloadController::class, 'downloadDocument'])
+            ->name('download')
+            ->where('type', 'piece_identite|justificatif_domicile|photo|origine_fonds');
+    });
+

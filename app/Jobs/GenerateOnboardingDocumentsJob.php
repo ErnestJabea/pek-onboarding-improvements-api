@@ -57,27 +57,35 @@ class GenerateOnboardingDocumentsJob implements ShouldQueue
                 mkdir(storage_path('app/secure_onboardings'), 0700, true);
             }
 
+            // Charger le logo en base64 pour l'affichage dans le PDF
+            $logoBase64 = '';
+            $logoPath   = public_path('logo-kori.png');
+            if (file_exists($logoPath)) {
+                $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
+            }
+
             // 2. Generate PDF files
             $pdfData = [
-                'session' => $this->session,
-                'payload' => $this->session->payload,
-                'user' => $user,
-                'signature' => $signatureBase64
+                'session'   => $this->session,
+                'payload'   => $this->session->payload ?? [],
+                'user'      => $user,
+                'signature' => $signatureBase64,
+                'logo'      => $logoBase64,
             ];
 
             // KYC PDF
             $kycPath = 'secure_onboardings/kyc_' . $this->session->id . '.pdf';
-            $kycPdf = Pdf::loadView('pdfs.onboarding.fiche_kyc', $pdfData);
+            $kycPdf = Pdf::loadView('pdfs.onboarding.fiche_kyc', $pdfData)->setPaper('a4', 'portrait');
             Storage::put($kycPath, $kycPdf->output());
 
             // Risk Profile PDF
             $riskPath = 'secure_onboardings/risk_' . $this->session->id . '.pdf';
-            $riskPdf = Pdf::loadView('pdfs.onboarding.profil_investisseur', $pdfData);
+            $riskPdf = Pdf::loadView('pdfs.onboarding.profil_investisseur', $pdfData)->setPaper('a4', 'portrait');
             Storage::put($riskPath, $riskPdf->output());
 
             // LAB-FT PDF
             $labftPath = 'secure_onboardings/labft_' . $this->session->id . '.pdf';
-            $labftPdf = Pdf::loadView('pdfs.onboarding.questionnaire_labft', $pdfData);
+            $labftPdf = Pdf::loadView('pdfs.onboarding.questionnaire_labft', $pdfData)->setPaper('a4', 'portrait');
             Storage::put($labftPath, $labftPdf->output());
 
             // 3. Send email to user (only contains Risk Profile PDF)

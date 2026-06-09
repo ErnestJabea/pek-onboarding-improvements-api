@@ -42,7 +42,7 @@ class OnboardingSessionResource extends Resource
 
     public static function canEdit(Model $record): bool
     {
-        return false; // Lecture seule
+        return true;
     }
 
     public static function form(Form $form): Form
@@ -74,8 +74,10 @@ class OnboardingSessionResource extends Resource
                         Placeholder::make('status')
                             ->label('Statut Onboarding')
                             ->content(fn ($record) => $record && $record->status ? match ($record->status) {
-                                'completed' => new HtmlString('<span style="color: green; font-weight: bold;">✓ Terminé</span>'),
-                                'pending' => new HtmlString('<span style="color: orange; font-weight: bold;">⏳ En cours</span>'),
+                                'validated' => new HtmlString('<span style="color: green; font-weight: bold;">✓ Validé / Activé</span>'),
+                                'completed' => new HtmlString('<span style="color: blue; font-weight: bold;">⏳ Soumis / En attente de validation</span>'),
+                                'rejected' => new HtmlString('<span style="color: red; font-weight: bold;">❌ Rejeté</span>'),
+                                'in_progress' => new HtmlString('<span style="color: orange; font-weight: bold;">⏳ En cours</span>'),
                                 default => $record->status,
                             } : '-'),
                     ]),
@@ -338,6 +340,50 @@ class OnboardingSessionResource extends Resource
                                         ]),
                                 ]),
                             ]),
+                        Tab::make('Pièces Justificatives (Admin)')
+                            ->schema([
+                                Grid::make(2)->schema([
+                                    Forms\Components\FileUpload::make('doc_piece_identite')
+                                        ->label('Pièce d\'identité (CNI / Passeport)')
+                                        ->directory('secure_onboardings/documents')
+                                        ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png'])
+                                        ->maxSize(10240)
+                                        ->dehydrated(fn ($state) => filled($state))
+                                        ->helperText(fn ($record) => $record && $record->doc_piece_identite 
+                                            ? new HtmlString('<a href="' . route('admin.document.download', ['session' => $record->id, 'type' => 'piece_identite']) . '" target="_blank" style="color: #009a4d; font-weight: bold; text-decoration: underline;">⬇️ Télécharger le document actuel</a>')
+                                            : 'Aucun document téléversé.'),
+                                    
+                                    Forms\Components\FileUpload::make('doc_justificatif_domicile')
+                                        ->label('Justificatif de domicile (< 3 mois)')
+                                        ->directory('secure_onboardings/documents')
+                                        ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png'])
+                                        ->maxSize(10240)
+                                        ->dehydrated(fn ($state) => filled($state))
+                                        ->helperText(fn ($record) => $record && $record->doc_justificatif_domicile 
+                                            ? new HtmlString('<a href="' . route('admin.document.download', ['session' => $record->id, 'type' => 'justificatif_domicile']) . '" target="_blank" style="color: #009a4d; font-weight: bold; text-decoration: underline;">⬇️ Télécharger le document actuel</a>')
+                                            : 'Aucun document téléversé.'),
+
+                                    Forms\Components\FileUpload::make('doc_photo')
+                                        ->label('Photo d\'identité récente')
+                                        ->directory('secure_onboardings/documents')
+                                        ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png'])
+                                        ->maxSize(10240)
+                                        ->dehydrated(fn ($state) => filled($state))
+                                        ->helperText(fn ($record) => $record && $record->doc_photo 
+                                            ? new HtmlString('<a href="' . route('admin.document.download', ['session' => $record->id, 'type' => 'photo']) . '" target="_blank" style="color: #009a4d; font-weight: bold; text-decoration: underline;">⬇️ Télécharger le document actuel</a>')
+                                            : 'Aucun document téléversé.'),
+
+                                    Forms\Components\FileUpload::make('doc_origine_fonds')
+                                        ->label('Justificatif d\'origine des fonds')
+                                        ->directory('secure_onboardings/documents')
+                                        ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png'])
+                                        ->maxSize(10240)
+                                        ->dehydrated(fn ($state) => filled($state))
+                                        ->helperText(fn ($record) => $record && $record->doc_origine_fonds 
+                                            ? new HtmlString('<a href="' . route('admin.document.download', ['session' => $record->id, 'type' => 'origine_fonds']) . '" target="_blank" style="color: #009a4d; font-weight: bold; text-decoration: underline;">⬇️ Télécharger le document actuel</a>')
+                                            : 'Aucun document téléversé.'),
+                                ]),
+                            ]),
                     ]),
             ]);
     }
@@ -374,9 +420,18 @@ class OnboardingSessionResource extends Resource
                     ->label('Statut')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'completed' => 'success',
+                        'validated' => 'success',
+                        'completed' => 'info',
+                        'rejected' => 'danger',
                         'in_progress' => 'warning',
                         default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'validated' => 'Validé',
+                        'completed' => 'Soumis / En attente',
+                        'rejected' => 'Rejeté',
+                        'in_progress' => 'En cours',
+                        default => $state,
                     })
                     ->sortable(),
                 TextColumn::make('updated_at')
@@ -388,8 +443,10 @@ class OnboardingSessionResource extends Resource
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Statut')
                     ->options([
-                        'completed' => 'Terminé',
                         'in_progress' => 'En cours',
+                        'completed' => 'Soumis / En attente',
+                        'validated' => 'Validé',
+                        'rejected' => 'Rejeté',
                     ]),
                 Tables\Filters\SelectFilter::make('risk_level')
                     ->label('Niveau de Risque')
@@ -401,6 +458,7 @@ class OnboardingSessionResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make()->label('Voir les détails'),
+                    Tables\Actions\EditAction::make()->label('Uploader Documents'),
                     TableAction::make('download_kyc')
                         ->label('Télécharger Fiche KYC')
                         ->icon('heroicon-o-document-arrow-down')
@@ -450,6 +508,7 @@ class OnboardingSessionResource extends Resource
         return [
             'index' => Pages\ListOnboardingSessions::route('/'),
             'view' => Pages\ViewOnboardingSession::route('/{record}'),
+            'edit' => Pages\EditOnboardingSession::route('/{record}/edit'),
         ];
     }
 

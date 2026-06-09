@@ -21,6 +21,10 @@ class OnboardingSession extends Model
         'risk_level',
         'status',
         'signature_path',
+        'doc_piece_identite',
+        'doc_justificatif_domicile',
+        'doc_photo',
+        'doc_origine_fonds',
     ];
 
     protected $casts = [

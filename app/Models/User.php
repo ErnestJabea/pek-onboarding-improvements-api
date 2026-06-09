@@ -76,7 +76,7 @@ class User extends Authenticatable implements HasName, FilamentUser
 
     public function getOnboardingCompletedAttribute(): bool
     {
-        return $this->onboardingSession()->where('status', 'completed')->exists();
+        return $this->onboardingSession()->whereIn('status', ['completed', 'validated'])->exists();
     }
 }
 
