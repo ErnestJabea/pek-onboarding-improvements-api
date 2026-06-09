@@ -50,10 +50,13 @@ class AuthController extends Controller
         // Send Email
         Mail::to($user->email)->send(new OtpMail($otpCode, $user));
 
-        return response()->json([
+        $responseData = [
             'message' => 'Utilisateur créé. Veuillez vérifier votre email pour le code OTP.',
-            'otp_debug' => $otpCode, // For testing prototype
-        ]);
+        ];
+        if (config('app.env') !== 'production' && config('app.debug')) {
+            $responseData['otp_debug'] = $otpCode;
+        }
+        return response()->json($responseData);
     }
 
     public function dashboardStats(Request $request)
@@ -198,10 +201,13 @@ class AuthController extends Controller
         // Send Email
         Mail::to($user->email)->send(new OtpMail($otpCode, $user));
 
-        return response()->json([
+        $responseData = [
             'message' => 'Un nouveau code a été envoyé.',
-            'otp_debug' => $otpCode,
-        ]);
+        ];
+        if (config('app.env') !== 'production' && config('app.debug')) {
+            $responseData['otp_debug'] = $otpCode;
+        }
+        return response()->json($responseData);
     }
 
     public function updateProfile(Request $request)
