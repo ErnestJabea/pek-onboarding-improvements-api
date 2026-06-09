@@ -21,7 +21,7 @@
                                                         <tr>
                                                             <td align="center" style="padding:0;margin:0;width:300px"
                                                                 valign="top">
-                                                                 <table cellpadding="0" cellspacing="0"
+                                                                <table cellpadding="0" cellspacing="0"
                                                                     role="presentation"
                                                                     style="border-collapse:collapse;border-spacing:0px"
                                                                     width="100%">
@@ -79,7 +79,7 @@
                                                                                 style="padding:0;margin:0">
                                                                                 <h1
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;letter-spacing:0;font-size:28px;font-style:normal;font-weight:bold;line-height:34px!important;color:#ffffff">
-                                                                                    Votre dossier est validé ! 🎉</h1>
+                                                                                    Votre dossier est validé !</h1>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -110,6 +110,7 @@
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">
                                                                                     <br>
                                                                                     PEK - Plan d'Épargne Kori<br>
+                                                                                    KORI ASSET MANAGEMENT<br>
                                                                                     Douala, Cameroun<br>
                                                                                     <a href="https://pek.koriassetmanagement.com"
                                                                                         target="_blank"
@@ -126,7 +127,8 @@
                                                                                 </p>
                                                                                 <p align="left"
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">
-                                                                                    Bonjour {{ $user->first_name }} {{ $user->last_name }},</p>
+                                                                                    Bonjour {{ $user->first_name }}
+                                                                                    {{ $user->last_name }},</p>
                                                                                 <p align="left"
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">
                                                                                 </p>
@@ -137,7 +139,15 @@
                                                                                         <tr>
                                                                                             <td align="left"
                                                                                                 style="font-size:16px;color:#333333;padding-bottom:20px;line-height:24px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                Félicitations, votre dossier d'onboarding pour le <strong>PLAN D'ÉPARGNE KORI</strong> a été vérifié et <strong>approuvé</strong> par notre équipe de conformité.
+                                                                                                Félicitations, votre
+                                                                                                dossier d'onboarding
+                                                                                                pour le <strong>PLAN
+                                                                                                    D'ÉPARGNE
+                                                                                                    KORI</strong> a été
+                                                                                                vérifié et
+                                                                                                <strong>approuvé</strong>
+                                                                                                par notre équipe de
+                                                                                                conformité.
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -150,7 +160,8 @@
                                                                                                         <tr>
                                                                                                             <td
                                                                                                                 style="font-size:18px;font-weight:bold;color:#16a34a;padding:18px 28px;text-align:center;letter-spacing:1px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                                COMPTE ACTIVÉ ✓
+                                                                                                                COMPTE
+                                                                                                                ACTIVÉ ✓
                                                                                                             </td>
                                                                                                         </tr>
                                                                                                     </tbody>
@@ -160,7 +171,16 @@
                                                                                         <tr>
                                                                                             <td align="left"
                                                                                                 style="font-size:14px;color:#555555;padding-top:10px;line-height:22px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                Votre compte titres est désormais pleinement actif pour les versements et souscriptions. Vous pouvez vous connecter sur l'application mobile pour commencer à investir dans votre avenir.
+                                                                                                Votre compte est
+                                                                                                désormais pleinement
+                                                                                                actif pour les
+                                                                                                versements et
+                                                                                                souscriptions. Vous
+                                                                                                pouvez vous connecter
+                                                                                                sur l'application mobile
+                                                                                                pour commencer à
+                                                                                                investir dans votre
+                                                                                                avenir.
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -168,7 +188,14 @@
                                                                                                 style="padding:30px 0 10px 0">
                                                                                                 <hr
                                                                                                     style="border:none;border-top:1px solid #eeeeee">
-                                                                                                <p align="center" style="font-size: 12px; color: #999999;font-family:arial,'helvetica neue',helvetica,sans-serif;">Vous recevez cet email car votre dossier d'onboarding sur la plateforme PEK a été validé.</p>
+                                                                                                <p align="center"
+                                                                                                    style="font-size: 12px; color: #999999;font-family:arial,'helvetica neue',helvetica,sans-serif;">
+                                                                                                    Vous recevez cet
+                                                                                                    email car votre
+                                                                                                    dossier d'onboarding
+                                                                                                    sur la plateforme
+                                                                                                    PEK a été validé.
+                                                                                                </p>
                                                                                             </td>
                                                                                         </tr>
                                                                                     </tbody>

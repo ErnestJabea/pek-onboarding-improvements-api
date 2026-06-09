@@ -59,6 +59,11 @@ class User extends Authenticatable implements HasName, FilamentUser
         'password' => 'hashed',
     ];
 
+    protected $appends = [
+        'onboarding_completed',
+        'onboarding_status',
+    ];
+
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class, 'user_id');
@@ -77,6 +82,11 @@ class User extends Authenticatable implements HasName, FilamentUser
     public function getOnboardingCompletedAttribute(): bool
     {
         return $this->onboardingSession()->whereIn('status', ['completed', 'validated'])->exists();
+    }
+
+    public function getOnboardingStatusAttribute(): ?string
+    {
+        return $this->onboardingSession ? $this->onboardingSession->status : null;
     }
 }
 

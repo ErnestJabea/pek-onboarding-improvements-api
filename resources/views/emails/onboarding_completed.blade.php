@@ -115,6 +115,7 @@
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">
                                                                                     <br>
                                                                                     PEK - Plan d'Épargne Kori<br>
+                                                                                    KORI ASSET MANAGEMENT<br>
                                                                                     Douala, Cameroun<br>
                                                                                     <a href="https://pek.koriassetmanagement.com"
                                                                                         target="_blank"
@@ -167,7 +168,7 @@
                                                                                             <tr>
                                                                                                 <td align="left"
                                                                                                     style="font-size:14px;color:#555555;line-height:22px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                    Pour finaliser définitivement l'ouverture de votre compte titres auprès de <strong>Kori Asset Management</strong>, veuillez préparer et fournir à nos agents les justificatifs suivants :
+                                                                                                    Pour finaliser définitivement l'ouverture de votre compte auprès de <strong>Kori Asset Management</strong>, veuillez préparer et fournir à nos agents les justificatifs suivants :
                                                                                                     <ul style="padding-left: 20px; margin-top: 10px;">
                                                                                                         <li>Copie certifiée conforme de votre pièce d'identité en cours de validité ({{ $payload['piece'] ?? 'CNI/Passeport' }} n° {{ $payload['num_piece'] ?? '' }})</li>
                                                                                                         <li>Justificatif de domicile de moins de 3 mois (facture d'eau, d'électricité ou plan de localisation)</li>

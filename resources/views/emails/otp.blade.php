@@ -80,7 +80,8 @@
                                                                                 <h1
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;letter-spacing:0;font-size:28px;font-style:normal;font-weight:normal;line-height:34px!important;color:#ffffff">
                                                                                     <strong>Votre code de
-                                                                                        vérification</strong></h1>
+                                                                                        vérification</strong>
+                                                                                </h1>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -111,6 +112,7 @@
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">
                                                                                     <br>
                                                                                     PEK - Plan d'Épargne Kori<br>
+                                                                                    KORI ASSET MANAGEMENT<br>
                                                                                     Douala, Cameroun<br>
                                                                                     <a href="https://pek.koriassetmanagement.com"
                                                                                         target="_blank"
@@ -142,7 +144,8 @@
                                                                                                     ci-dessous pour
                                                                                                     finaliser votre
                                                                                                     inscription
-                                                                                                    :</strong></td>
+                                                                                                    :</strong>
+                                                                                            </td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="center"

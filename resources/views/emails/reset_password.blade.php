@@ -79,7 +79,9 @@
                                                                                 style="padding:0;margin:0">
                                                                                 <h1
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;letter-spacing:0;font-size:28px;font-style:normal;font-weight:normal;line-height:34px!important;color:#ffffff">
-                                                                                    <strong>Mot de passe réinitialisé</strong></h1>
+                                                                                    <strong>Mot de passe
+                                                                                        réinitialisé</strong>
+                                                                                </h1>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -110,6 +112,7 @@
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">
                                                                                     <br>
                                                                                     PEK - Plan d'Épargne Kori<br>
+                                                                                    KORI ASSET MANAGEMENT<br>
                                                                                     Douala, Cameroun<br>
                                                                                     <a href="https://pek.koriassetmanagement.com"
                                                                                         target="_blank"
@@ -137,7 +140,11 @@
                                                                                         <tr>
                                                                                             <td align="center"
                                                                                                 style="font-size:16px;color:#555555;padding-bottom:20px">
-                                                                                                <strong>Voici votre nouveau mot de passe temporaire :</strong></td>
+                                                                                                <strong>Voici votre
+                                                                                                    nouveau mot de passe
+                                                                                                    temporaire
+                                                                                                    :</strong>
+                                                                                            </td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="center"
@@ -159,14 +166,19 @@
                                                                                         <tr>
                                                                                             <td align="center"
                                                                                                 style="font-size:14px;color:#888888;padding-top:10px">
-                                                                                                Connectez-vous dès maintenant et pensez à modifier ce mot de passe depuis les paramètres de votre profil.
+                                                                                                Connectez-vous dès
+                                                                                                maintenant et pensez à
+                                                                                                modifier ce mot de passe
+                                                                                                depuis les paramètres de
+                                                                                                votre profil.
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="center"
                                                                                                 style="font-size:14px;color:#aa0000;padding-top:20px">
                                                                                                 ⚠️ Ne partagez jamais ce
-                                                                                                mot de passe avec qui que ce
+                                                                                                mot de passe avec qui
+                                                                                                que ce
                                                                                                 soit.</td>
                                                                                         </tr>
                                                                                         <tr>
@@ -180,8 +192,10 @@
                                                                                             <td align="center"
                                                                                                 style="font-size:12px;color:#999999;line-height:18px">
                                                                                                 <p>Vous recevez cet
-                                                                                                    email car une demande
-                                                                                                    de réinitialisation de mot de passe a
+                                                                                                    email car une
+                                                                                                    demande
+                                                                                                    de réinitialisation
+                                                                                                    de mot de passe a
                                                                                                     été effectuée avec
                                                                                                     cette adresse email
                                                                                                     sur la plateforme
@@ -209,7 +223,7 @@
                                                         <tr>
                                                             <td align="center" style="padding:0;margin:0;width:100%">
                                                                 <p
-                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:21px;letter-spacing:0;color:#999999;font-size:14px">
+                                                                    style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:21px;letter-spacing:0;color:#999999;font-size:14px">
                                                                     PEK - Investissez dans votre avenir</p>
                                                             </td>
                                                         </tr>

@@ -58,7 +58,7 @@ class AuthController extends Controller
 
     public function dashboardStats(Request $request)
     {
-        $user = $request->user();
+        $user = $request->user()->loadMissing('onboardingSession');
 
         // Valorisation FCP en temps réel via PortfolioService
         $portfolioService = new PortfolioService();
@@ -73,6 +73,7 @@ class AuthController extends Controller
             'calcule_le'          => $valuation['calcule_le'],
             'user'                => $user,
             'onboarding_completed'=> $user->onboarding_completed,
+            'onboarding_status'   => $user->onboarding_status,
         ]);
     }
 
