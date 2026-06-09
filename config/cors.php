@@ -24,6 +24,8 @@ return [
         'http://127.0.0.1:5173',
         'http://localhost:8000',
         'http://127.0.0.1:8000',
+        'https://pek-v2.ejabbing.com',
+        'https://pek-mobile.ejabbing.com',
         env('FRONTEND_URL', 'https://pek-mobile.ejabbing.com'),
     ],
 
