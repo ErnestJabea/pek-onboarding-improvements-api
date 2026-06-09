@@ -21,9 +21,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class OnboardingSessionResource extends Resource
 {
@@ -39,7 +37,7 @@ class OnboardingSessionResource extends Resource
 
     public static function canCreate(): bool
     {
-        return false; // Lecture seule
+        return true;
     }
 
     public static function canEdit(Model $record): bool
@@ -51,25 +49,39 @@ class OnboardingSessionResource extends Resource
     {
         return $form
             ->schema([
+                Section::make('Création de la session')
+                    ->visible(fn ($record) => $record === null || !$record->exists)
+                    ->schema([
+                        Forms\Components\Select::make('user_id')
+                            ->label('Client')
+                            ->relationship('user', 'email', fn (Builder $query) => $query->where('role', 'client')->whereDoesntHave('onboardingSession'))
+                            ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->first_name} {$record->last_name} ({$record->email})")
+                            ->required()
+                            ->searchable()
+                            ->preload(),
+                    ]),
+
                 Section::make('Statut de la session')
+                    ->visible(fn ($record) => $record && $record->exists)
                     ->columns(3)
                     ->schema([
                         Placeholder::make('user_name')
                             ->label('Client')
-                            ->content(fn ($record) => $record->user ? trim($record->user->first_name . ' ' . $record->user->last_name) : '-'),
+                            ->content(fn ($record) => $record && $record->user ? trim($record->user->first_name . ' ' . $record->user->last_name) : '-'),
                         Placeholder::make('user_email')
                             ->label('Email client')
-                            ->content(fn ($record) => $record->user ? $record->user->email : '-'),
+                            ->content(fn ($record) => $record && $record->user ? $record->user->email : '-'),
                         Placeholder::make('status')
                             ->label('Statut Onboarding')
-                            ->content(fn ($record) => match ($record->status) {
+                            ->content(fn ($record) => $record && $record->status ? match ($record->status) {
                                 'completed' => new HtmlString('<span style="color: green; font-weight: bold;">✓ Terminé</span>'),
                                 'pending' => new HtmlString('<span style="color: orange; font-weight: bold;">⏳ En cours</span>'),
                                 default => $record->status,
-                            }),
+                            } : '-'),
                     ]),
 
                 Tabs::make('Details')
+                    ->visible(fn ($record) => $record && $record->exists)
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Informations KYC & Identité')
@@ -208,7 +220,14 @@ class OnboardingSessionResource extends Resource
                                 Grid::make(3)->schema([
                                     Placeholder::make('payload.agent_kam')->label('Agent KAM de référence')->content(fn ($state) => new HtmlString('<div style="font-weight: 600; color: #1e293b;">' . ($state ?? '-') . '</div>')),
                                     Placeholder::make('payload.secteur')->label('Secteur d\'activité professionnelle')->content(fn ($state) => new HtmlString('<div style="font-weight: 600; color: #1e293b;">' . ($state ?? '-') . '</div>')),
-                                    Placeholder::make('payload.revenus_annuels')->label('Revenus annuels estimés')->content(fn ($state) => new HtmlString('<div style="font-weight: 600; color: #1e293b;">' . ($state ?? '-') . '</div>')),
+                                    Placeholder::make('payload.revenus_annuels')
+                                        ->label('Revenus annuels estimés')
+                                        ->content(fn ($state) => new HtmlString('<div style="font-weight: 600; color: #1e293b;">' . match ($state) {
+                                            'moins_5m' => 'Moins de 5 000 000 FCFA',
+                                            '5m_15m', '5_15m' => 'Entre 5 000 000 et 15 000 000 FCFA',
+                                            'plus_15m' => 'Plus de 15 000 000 FCFA',
+                                            default => $state ?? '-',
+                                        } . '</div>')),
                                     Placeholder::make('payload.origine_fonds')->label('Origine des fonds investis')->content(fn ($state) => new HtmlString('<div style="font-weight: 600; color: #1e293b;">' . ($state ?? '-') . '</div>')),
                                     Placeholder::make('sources_revenus')
                                         ->label('Sources de revenus déclarées')
@@ -293,7 +312,7 @@ class OnboardingSessionResource extends Resource
                                                 }),
                                         ]),
 
-                                    Section::make('Téléchargement des documents réglementaires (PDF)')
+                                    Section::make('Téléchargement des documents (PDF)')
                                         ->columnSpan(1)
                                         ->schema([
                                             Actions::make([
@@ -301,17 +320,20 @@ class OnboardingSessionResource extends Resource
                                                     ->label('Télécharger la Fiche KYC')
                                                     ->icon('heroicon-o-document-arrow-down')
                                                     ->color('success')
-                                                    ->action(fn (OnboardingSession $record) => self::downloadPdf($record, 'kyc')),
+                                                    ->url(fn (OnboardingSession $record) => route('admin.pdf.download', ['session' => $record->id, 'type' => 'kyc']))
+                                                    ->openUrlInNewTab(),
                                                 FormAction::make('download_risk')
                                                     ->label('Télécharger le Profil Investisseur')
                                                     ->icon('heroicon-o-document-arrow-down')
-                                                    ->color('success')
-                                                    ->action(fn (OnboardingSession $record) => self::downloadPdf($record, 'risk')),
+                                                    ->color('info')
+                                                    ->url(fn (OnboardingSession $record) => route('admin.pdf.download', ['session' => $record->id, 'type' => 'risk']))
+                                                    ->openUrlInNewTab(),
                                                 FormAction::make('download_labft')
                                                     ->label('Télécharger le Questionnaire LAB-FT')
                                                     ->icon('heroicon-o-document-arrow-down')
-                                                    ->color('success')
-                                                    ->action(fn (OnboardingSession $record) => self::downloadPdf($record, 'labft')),
+                                                    ->color('warning')
+                                                    ->url(fn (OnboardingSession $record) => route('admin.pdf.download', ['session' => $record->id, 'type' => 'labft']))
+                                                    ->openUrlInNewTab(),
                                             ]),
                                         ]),
                                 ]),
@@ -382,15 +404,30 @@ class OnboardingSessionResource extends Resource
                     TableAction::make('download_kyc')
                         ->label('Télécharger Fiche KYC')
                         ->icon('heroicon-o-document-arrow-down')
-                        ->action(fn (OnboardingSession $record) => self::downloadPdf($record, 'kyc')),
+                        ->color('success')
+                        ->url(fn (OnboardingSession $record) => route('admin.pdf.download', [
+                            'session' => $record->id,
+                            'type'    => 'kyc',
+                        ]))
+                        ->openUrlInNewTab(),
                     TableAction::make('download_risk')
                         ->label('Télécharger Profil Investisseur')
                         ->icon('heroicon-o-document-arrow-down')
-                        ->action(fn (OnboardingSession $record) => self::downloadPdf($record, 'risk')),
+                        ->color('info')
+                        ->url(fn (OnboardingSession $record) => route('admin.pdf.download', [
+                            'session' => $record->id,
+                            'type'    => 'risk',
+                        ]))
+                        ->openUrlInNewTab(),
                     TableAction::make('download_labft')
                         ->label('Télécharger Questionnaire LAB-FT')
                         ->icon('heroicon-o-document-arrow-down')
-                        ->action(fn (OnboardingSession $record) => self::downloadPdf($record, 'labft')),
+                        ->color('warning')
+                        ->url(fn (OnboardingSession $record) => route('admin.pdf.download', [
+                            'session' => $record->id,
+                            'type'    => 'labft',
+                        ]))
+                        ->openUrlInNewTab(),
                 ]),
             ])
             ->bulkActions([
@@ -416,58 +453,6 @@ class OnboardingSessionResource extends Resource
         ];
     }
 
-    /**
-     * Helper to download or compile PDF on the fly.
-     */
-    public static function downloadPdf(OnboardingSession $record, string $type)
-    {
-        $prefix = match ($type) {
-            'kyc' => 'kyc_',
-            'risk' => 'risk_',
-            'labft' => 'labft_',
-        };
-
-        $viewName = match ($type) {
-            'kyc' => 'pdfs.onboarding.fiche_kyc',
-            'risk' => 'pdfs.onboarding.profil_investisseur',
-            'labft' => 'pdfs.onboarding.questionnaire_labft',
-        };
-
-        $filename = match ($type) {
-            'kyc' => 'fiche_kyc_',
-            'risk' => 'profil_investisseur_',
-            'labft' => 'questionnaire_labft_',
-        } . ($record->user->last_name ?? 'client') . '_' . ($record->user->first_name ?? '') . '.pdf';
-
-        $path = 'secure_onboardings/' . $prefix . $record->id . '.pdf';
-
-        if (Storage::exists($path)) {
-            return Storage::download($path, $filename);
-        }
-
-        // Generate on the fly
-        $signatureBase64 = '';
-        if ($record->signature_path && Storage::exists($record->signature_path)) {
-            $imgData = Storage::get($record->signature_path);
-            $mime = 'image/png';
-            if (str_ends_with($record->signature_path, '.jpg') || str_ends_with($record->signature_path, '.jpeg')) {
-                $mime = 'image/jpeg';
-            }
-            $signatureBase64 = 'data:' . $mime . ';base64,' . base64_encode($imgData);
-        }
-
-        $pdfData = [
-            'session' => $record,
-            'payload' => $record->payload ?? [],
-            'user' => $record->user,
-            'signature' => $signatureBase64,
-        ];
-
-        $pdf = Pdf::loadView($viewName, $pdfData);
-        return response()->streamDownload(
-            fn () => print($pdf->output()),
-            $filename,
-            ['Content-Type' => 'application/pdf']
-        );
-    }
+    // Le téléchargement des PDFs est géré par App\Http\Controllers\Admin\PdfDownloadController
+    // via la route nommée 'admin.pdf.download' pour éviter les problèmes de réponse HTTP dans Livewire.
 }

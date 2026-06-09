@@ -45,7 +45,7 @@ class OnboardingMail extends Mailable
         $clientName = strtoupper($this->user->last_name) . ' ' . $this->user->first_name;
 
         return new Envelope(
-            subject: "Onboarding FCP PEK - {$riskString} - Dossier de {$clientName}",
+            subject: "Onboarding PEK - {$riskString} - Dossier de {$clientName}",
         );
     }
 

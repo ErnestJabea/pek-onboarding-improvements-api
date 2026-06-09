@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Questionnaire LAB-FT - Onboarding PEK</title>
@@ -7,139 +8,168 @@
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             color: #2d3748;
-            font-size: 9.5pt;
-            line-height: 1.4;
-            margin: 20px;
+            font-size: 8.5pt;
+            line-height: 1.25;
+            margin: 15px;
         }
+
         .header {
-            border-bottom: 2px solid #1a2b44;
-            padding-bottom: 10px;
+            background-color: #ffffff;
+            border-bottom: 3px solid #491D00;
+            padding-bottom: 14px;
             margin-bottom: 20px;
         }
+
         .header table {
             width: 100%;
         }
+
         .logo-text {
             font-size: 24px;
             font-weight: bold;
-            color: #1a2b44;
+            color: #242424;
         }
+
         .doc-meta {
             text-align: right;
             font-size: 9pt;
             color: #718096;
         }
+
         h1 {
-            color: #1a2b44;
-            font-size: 14pt;
+            color: #242424;
+            font-size: 12.5pt;
             text-transform: uppercase;
             text-align: center;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
             letter-spacing: 1px;
         }
+
         .subtitle {
             text-align: center;
-            font-size: 8.5pt;
+            font-size: 8pt;
             color: #718096;
-            margin-bottom: 25px;
+            margin-bottom: 10px;
             font-style: italic;
         }
+
         .section-title {
-            background-color: #f7fafc;
-            border-left: 4px solid #1a2b44;
-            padding: 4px 10px;
+            background-color: #491d00;
+            border-left: 4px solid #ebb009;
+            padding: 8px 10px;
             font-weight: bold;
-            color: #1a2b44;
-            font-size: 10pt;
-            margin-top: 15px;
-            margin-bottom: 10px;
+            color: #ebb009;
+            font-size: 9pt;
+            margin-top: 8px;
+            margin-bottom: 4px;
             text-transform: uppercase;
         }
+
         table.data-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
+
         table.data-table td {
-            padding: 6px 10px;
+            padding: 4px 8px;
             border-bottom: 1px solid #edf2f7;
             vertical-align: top;
-            font-size: 9pt;
+            font-size: 8.5pt;
         }
+
         table.data-table td.label {
             font-weight: bold;
             color: #4a5568;
             width: 40%;
         }
+
         table.data-table td.value {
             color: #2d3748;
         }
+
         .alert-box {
             background-color: #fffaf0;
             border: 1px solid #feebc8;
             border-radius: 6px;
-            padding: 10px 15px;
-            margin-bottom: 15px;
+            padding: 6px 10px;
+            margin-bottom: 10px;
             color: #c05621;
-            font-size: 9pt;
+            font-size: 8.5pt;
         }
+
         .signature-section {
-            margin-top: 30px;
+            margin-top: 12px;
             page-break-inside: avoid;
         }
+
         .signature-table {
             width: 100%;
             margin-top: 15px;
         }
+
         .signature-box {
-            border: 1px dashed #cbd5e0;
-            height: 100px;
-            width: 250px;
+            height: 80px;
+            width: 230px;
             text-align: center;
             vertical-align: middle;
-            background-color: #f8fafc;
+            display: inline-block;
         }
+
         .signature-box img {
-            max-height: 90px;
-            max-width: 240px;
+            max-height: 75px;
+            max-width: 220px;
         }
+
         .footer {
+            background-color: #491d00;
+            padding: 8px;
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             text-align: center;
             font-size: 8pt;
-            color: #a0aec0;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 8px;
+            color: #fff;
         }
     </style>
 </head>
+
 <body>
 
     <div class="header">
-        <table>
+        <table style="width: 100%; border-collapse: collapse;">
             <tr>
-                <td>
-                    <span class="logo-text">PEK</span><br>
-                    <span style="font-size: 9pt; color: #718096; font-weight: bold;">PLAN D'ÉPARGNE KORI</span>
+                <td style="vertical-align: middle; width: 60%;">
+                    @if (!empty($logo))
+                        <img src="{{ $logo }}" alt="Kori Asset Management" style="height: 55px; width: auto;">
+                    @else
+                        <span
+                            style="font-size: 22px; font-weight: bold; color: #491D00; letter-spacing: 2px;">PEK</span><br>
+                        <span
+                            style="font-size: 8.5pt; color: #4a5568; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">KORI
+                            ASSET MANAGEMENT</span>
+                    @endif
                 </td>
-                <td class="doc-meta">
-                    Réf : LABFT-{{ $session->id }}<br>
+                <td style="text-align: right; font-size: 8.5pt; color: #491D00; vertical-align: top;">
+                    <strong style="color: #242424; font-size: 9pt;">QUESTIONNAIRE LAB-FT</strong><br>
+                    Réf : {{ str_replace('KYC-', 'LABFT-', $session->reference) }}<br>
                     Nom : {{ strtoupper($user->last_name) }} {{ $user->first_name }}
                 </td>
             </tr>
         </table>
     </div>
 
-    <h1>Questionnaire de Diligence LAB/FT</h1>
-    <div class="subtitle">Lutte contre le Blanchiment de Capitaux et le Financement du Terrorisme - Règlement COBAC R-2005/01</div>
+    <h1>Questionnaire LAB/FT</h1>
+    <div class="subtitle">Lutte contre le Blanchiment de Capitaux et le Financement du Terrorisme - Règlement COBAC
+        R-2005/01</div>
 
-    @if($session->risk_level === 'HIGH')
-    <div class="alert-box">
-        <strong>⚠️ EXAMEN RENFORCÉ REQUIS :</strong> Des indicateurs de vigilance réglementaire (PPE ou exposition géographique/sectorielle) ont été cochés. Ce dossier doit faire l'objet d'une validation manuelle par l'équipe conformité.
-    </div>
+    @if ($session->risk_level === 'HIGH')
+        <div class="alert-box">
+            <strong>⚠️ EXAMEN RENFORCÉ REQUIS :</strong> Des indicateurs de vigilance réglementaire (PPE ou exposition
+            géographique/sectorielle) ont été cochés. Ce dossier doit faire l'objet d'une validation manuelle par
+            l'équipe conformité.
+        </div>
     @endif
 
     <div class="section-title">1. Situation de Famille & Résidence</div>
@@ -154,13 +184,14 @@
         </tr>
         <tr>
             <td class="label">Date d'Expiration de la Pièce</td>
-            <td class="value">{{ $payload['expiration_piece'] ? date('d/m/Y', strtotime($payload['expiration_piece'])) : '' }}</td>
+            <td class="value">
+                {{ $payload['expiration_piece'] ? date('d/m/Y', strtotime($payload['expiration_piece'])) : '' }}</td>
         </tr>
-        @if(!empty($payload['agent_kam']))
-        <tr>
-            <td class="label">Agent Kori Asset Management associé</td>
-            <td class="value">{{ $payload['agent_kam'] }}</td>
-        </tr>
+        @if (!empty($payload['agent_kam']))
+            <tr>
+                <td class="label">Agent Kori Asset Management associé</td>
+                <td class="value">{{ $payload['agent_kam'] }}</td>
+            </tr>
         @endif
     </table>
 
@@ -172,19 +203,41 @@
         </tr>
         <tr>
             <td class="label">Tranche d'estimation des Revenus Annuels</td>
-            <td class="value">{{ $payload['revenus_annuels'] ?? '' }}</td>
+            <td class="value">
+                @if (($payload['revenus_annuels'] ?? '') === 'moins_5m')
+                    Moins de 5 000 000 FCFA
+                @elseif(($payload['revenus_annuels'] ?? '') === '5m_15m' || ($payload['revenus_annuels'] ?? '') === '5_15m')
+                    Entre 5 000 000 et 15 000 000 FCFA
+                @elseif(($payload['revenus_annuels'] ?? '') === 'plus_15m')
+                    Plus de 15 000 000 FCFA
+                @else
+                    {{ $payload['revenus_annuels'] ?? '' }}
+                @endif
+            </td>
         </tr>
         <tr>
             <td class="label">Sources des Revenus Déclarées</td>
             <td class="value">
                 @php
                     $sources = [];
-                    if ($payload['src_salaire'] ?? false) $sources[] = 'Salaire';
-                    if ($payload['src_pro_liberal'] ?? false) $sources[] = 'Profession Libérale / Honoraires';
-                    if ($payload['src_foncier'] ?? false) $sources[] = 'Revenus Fonciers';
-                    if ($payload['src_dividendes'] ?? false) $sources[] = 'Dividendes / Plus-values';
-                    if ($payload['src_heritage'] ?? false) $sources[] = 'Héritage';
-                    if ($payload['src_autre_check'] ?? false) $sources[] = 'Autre : ' . ($payload['src_autre'] ?? '');
+                    if ($payload['src_salaire'] ?? false) {
+                        $sources[] = 'Salaire';
+                    }
+                    if ($payload['src_pro_liberal'] ?? false) {
+                        $sources[] = 'Profession Libérale / Honoraires';
+                    }
+                    if ($payload['src_foncier'] ?? false) {
+                        $sources[] = 'Revenus Fonciers';
+                    }
+                    if ($payload['src_dividendes'] ?? false) {
+                        $sources[] = 'Dividendes / Plus-values';
+                    }
+                    if ($payload['src_heritage'] ?? false) {
+                        $sources[] = 'Héritage';
+                    }
+                    if ($payload['src_autre_check'] ?? false) {
+                        $sources[] = 'Autre : ' . ($payload['src_autre'] ?? '');
+                    }
                 @endphp
                 {{ implode(', ', $sources) }}
             </td>
@@ -203,8 +256,9 @@
             <td class="label">Êtes-vous une Personne Politiquement Exposée (PPE) ?</td>
             <td class="value">
                 <strong>{{ $payload['ppe'] ?? 'Non' }}</strong>
-                @if(($payload['ppe'] ?? 'Non') === 'Oui')
-                    <br><span style="font-size: 8.5pt; color: #718096;">Détails de la fonction : {{ $payload['ppe_detail'] ?? '' }}</span>
+                @if (($payload['ppe'] ?? 'Non') === 'Oui')
+                    <br><span style="font-size: 8.5pt; color: #718096;">Détails de la fonction :
+                        {{ $payload['ppe_detail'] ?? '' }}</span>
                 @endif
             </td>
         </tr>
@@ -226,33 +280,39 @@
     <table class="data-table">
         <tr>
             <td style="width: 5%; font-weight: bold; text-align: center;">[X]</td>
-            <td style="width: 95%;">Je déclare avoir pris connaissance des règlements généraux et conditions du Fonds FCP KORI SÉRÉNITÉ.</td>
+            <td style="width: 95%;">Je déclare avoir pris connaissance des règlements généraux et conditions du Fonds
+                FCP KORI SÉRÉNITÉ.</td>
         </tr>
         <tr>
             <td style="width: 5%; font-weight: bold; text-align: center;">[X]</td>
-            <td style="width: 95%;">J'autorise Kori Asset Management à effectuer le traitement informatique de mes données personnelles et financières dans le strict respect de la réglementation en vigueur.</td>
+            <td style="width: 95%;">J'autorise Kori Asset Management à effectuer le traitement informatique de mes
+                données personnelles et financières dans le strict respect de la réglementation en vigueur.</td>
         </tr>
     </table>
 
     <div class="signature-section">
         <table class="signature-table">
             <tr>
-                <td style="width: 50%;">
-                    <p style="font-size: 9pt; color: #4a5568; line-height: 1.4;">
-                        Je soussigné(e) {{ $payload['prenom'] ?? '' }} {{ $payload['nom'] ?? '' }}, certifie sur l'honneur l'exactitude de toutes les informations fournies dans ce dossier d'onboarding.<br>
-                        Je déclare accepter expressément les règlements du FCP PEK et reconnais que cette signature électronique fait foi de mon engagement contractuel.<br>
-                        Fait à Yaoundé, le {{ now()->format('d/m/Y') }}
-                    </p>
-                </td>
-                <td style="width: 50%; text-align: right;">
-                    <div style="display: inline-block; text-align: left;">
-                        <span style="font-size: 8.5pt; font-weight: bold; color: #4a5568; display: block; margin-bottom: 5px;">Signature du Client :</span>
+                <td style="width: 100%; text-align: right; vertical-align: top;">
+                    <div style="display: inline-block; text-align: right;">
+                        <span
+                            style="font-size: 8.5pt; font-weight: bold; color: #242424; display: block; text-align: right; margin-bottom: 5px;">Signature
+                            du Client :</span>
                         <div class="signature-box">
-                            @if($signature)
+                            @if ($signature)
                                 <img src="{{ $signature }}" alt="Signature Client">
                             @else
-                                <span style="color: #a0aec0; font-size: 9pt; line-height: 100px;">Pas de signature</span>
+                                <span
+                                    style="color: #a0aec0; font-size: 9pt; line-height: 80px; display: block; text-align: center;">Pas
+                                    de signature</span>
                             @endif
+                        </div>
+                        <div
+                            style="font-style: italic; font-size: 9.5pt; color: #2d3748; text-align: right; margin-top: 5px;">
+                            Lu et approuvé
+                        </div>
+                        <div style="margin-top: 5px; font-size: 9.5pt; color: #2d3748; text-align: right;">
+                            Fait à Yaoundé, le <strong>{{ now()->format('d/m/Y') }}</strong>
                         </div>
                     </div>
                 </td>
@@ -261,9 +321,11 @@
     </div>
 
     <div class="footer">
-        Kori Asset Management S.A. - Agrément COSUMAF n° GP-04/2018 - Siège social : Douala, Cameroun<br>
-        PEK FCP - Onboarding entièrement dématérialisé - Page 1/1
+        <strong>Kori Asset Management S.A.</strong> — Agrément COSUMAF-SGP-01/2023 — Siège social : Douala,
+        Cameroun<br>
+        FCP KORI SERENITE · Document généré le {{ now()->format('d/m/Y à H:i') }}
     </div>
 
 </body>
+
 </html>

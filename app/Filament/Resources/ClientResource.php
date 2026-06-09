@@ -10,6 +10,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use App\Models\OnboardingSession;
+use App\Filament\Resources\OnboardingSessionResource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -96,6 +98,40 @@ class ClientResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('create_onboarding')
+                    ->label('Créer Onboarding')
+                    ->icon('heroicon-o-document-plus')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->modalHeading('Créer la session d\'onboarding')
+                    ->modalDescription('Êtes-vous sûr de vouloir initialiser la session d\'onboarding pour ce client ? Ses informations de base seront pré-remplies.')
+                    ->modalSubmitActionLabel('Créer')
+                    ->visible(fn (Client $record) => !$record->onboardingSession()->exists())
+                    ->action(function (Client $record) {
+                        $record->onboardingSession()->create([
+                            'current_step' => 'kyc',
+                            'status' => 'in_progress',
+                            'payload' => [
+                                'nom' => $record->last_name,
+                                'prenom' => $record->first_name,
+                                'email' => $record->email,
+                                'tel' => $record->phone,
+                                'pays_residence' => $record->country,
+                                'adresse' => $record->city,
+                            ],
+                        ]);
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('Session d\'onboarding créée avec succès')
+                            ->success()
+                            ->send();
+                    }),
+                Tables\Actions\Action::make('view_onboarding')
+                    ->label('Voir Onboarding')
+                    ->icon('heroicon-o-clipboard-document-check')
+                    ->color('info')
+                    ->visible(fn (Client $record) => $record->onboardingSession()->exists())
+                    ->url(fn (Client $record) => OnboardingSessionResource::getUrl('view', ['record' => $record->onboardingSession])),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

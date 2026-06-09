@@ -22,8 +22,6 @@ class StoreLABFTRequest extends FormRequest
         return [
             'situation_mat' => 'required|string|max:50',
             'pays_residence' => 'required|string|max:100',
-            'expiration_piece' => 'required|date',
-            'agent_kam' => 'nullable|string|max:100',
             'secteur' => 'required|string|max:255',
             'revenus_annuels' => 'required|string|max:100',
             'src_salaire' => 'nullable|boolean',

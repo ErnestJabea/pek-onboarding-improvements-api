@@ -31,7 +31,7 @@ class OnboardingSessionPolicy
      */
     public function create(User $user): bool
     {
-        return false; // Lecture seule dans le backoffice
+        return $user->hasRole('super_admin') || $user->can('create_onboarding_session');
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\PdfDownloadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,14 @@ Route::get('language/{locale}', function ($locale) {
 Route::get('/', function () {
     return response()->json(['status' => 'online', 'service' => 'PEK FCP API']);
 });
+
+// Téléchargement des PDFs d'onboarding (protégé par l'authentification Filament)
+Route::middleware(['web', 'auth'])
+    ->prefix('admin/pdf')
+    ->name('admin.pdf.')
+    ->group(function () {
+        Route::get('/onboarding/{session}/{type}', [PdfDownloadController::class, 'download'])
+            ->name('download')
+            ->where('type', 'kyc|risk|labft');
+    });
 

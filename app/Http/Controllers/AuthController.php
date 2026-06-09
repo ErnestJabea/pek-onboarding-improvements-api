@@ -114,11 +114,23 @@ class AuthController extends Controller
 
         $otp->delete();
 
+        $cookie = cookie(
+            'auth_token',
+            $token,
+            1440, // 24 heures
+            '/',
+            null,
+            $request->isSecure(),
+            true, // HttpOnly
+            false,
+            app()->environment('local') ? 'Lax' : 'Strict'
+        );
+
         return response()->json([
-            'access_token' => $token,
+            'access_token' => 'cookie_session',
             'token_type' => 'Bearer',
             'user' => $user,
-        ]);
+        ])->withCookie($cookie);
     }
 
     public function login(Request $request)
@@ -140,11 +152,23 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
+        $cookie = cookie(
+            'auth_token',
+            $token,
+            1440, // 24 heures
+            '/',
+            null,
+            $request->isSecure(),
+            true, // HttpOnly
+            false,
+            app()->environment('local') ? 'Lax' : 'Strict'
+        );
+
         return response()->json([
-            'access_token' => $token,
+            'access_token' => 'cookie_session',
             'token_type' => 'Bearer',
             'user' => $user,
-        ]);
+        ])->withCookie($cookie);
     }
 
     public function resendOtp(Request $request)
@@ -253,5 +277,18 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Un email avec votre nouveau mot de passe vous a été envoyé.',
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        if ($request->user()) {
+            $request->user()->currentAccessToken()->delete();
+        }
+
+        $cookie = cookie()->forget('auth_token');
+
+        return response()->json([
+            'message' => 'Déconnecté avec succès.'
+        ])->withCookie($cookie);
     }
 }
