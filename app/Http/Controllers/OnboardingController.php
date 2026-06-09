@@ -145,8 +145,11 @@ class OnboardingController extends Controller
             $session->current_step = 'completed';
             $session->save();
 
-            // 7. Dispatch Background Job
-            GenerateOnboardingDocumentsJob::dispatch($session, $request->signature);
+            // 7. Generate documents and send emails synchronously
+            // Using dispatchSync() to ensure the job runs immediately in the same HTTP request,
+            // regardless of the QUEUE_CONNECTION setting (avoids silent failures in production
+            // when no queue worker is running).
+            GenerateOnboardingDocumentsJob::dispatchSync($session, $request->signature);
 
             // 8. Create In-App Notification
             Notification::create([
