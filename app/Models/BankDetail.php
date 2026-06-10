@@ -15,5 +15,8 @@ class BankDetail extends Model
         'rib',
         'swift',
         'is_active',
+        'om_instructions',
+        'momo_instructions',
+        'bank_instructions',
     ];
 }

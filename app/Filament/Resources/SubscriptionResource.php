@@ -63,6 +63,7 @@ class SubscriptionResource extends Resource
                         'orange_money' => 'Orange Money',
                         'mtn_momo' => 'MTN MoMo',
                         'virement' => 'Virement Bancaire',
+                        'manuel' => 'Demande de souscription',
                     ])
                     ->required(),
                 Forms\Components\Select::make('statut')

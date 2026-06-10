@@ -34,8 +34,9 @@ class SubscriptionController extends Controller
         $montant_total = $request->montant_total ?? ($request->nb_parts * $product->vl);
         $final_amount = $montant_total + ($montant_total * 0.01);
 
-        if ($montant_total < $product->seuil_minimum) {
-            return response()->json(['message' => 'Le montant total est inférieur au seuil minimum.'], 422);
+        // Le minimum de placement est d'une part (valeur liquidative actuelle)
+        if ($montant_total < ($product->vl - 0.01) || $request->nb_parts < 0.9999) {
+            return response()->json(['message' => 'Le montant ou le nombre de parts est inférieur au minimum de souscription requis (1 part).'], 422);
         }
 
         $subscription = Subscription::create([
@@ -53,144 +54,8 @@ class SubscriptionController extends Controller
         $pekBankDetails = null;
 
         // 2. Handle Payment Logic
-        if ($request->moyen_paiement === 'bank_card') {
-            // Stripe Card
-            try {
-                $user = Auth::user();
-                $customer = \Stripe\Customer::create([
-                    'email' => $user->email,
-                    'name' => "{$user->first_name} {$user->last_name}",
-                ]);
-
-                $paymentIntent = PaymentIntent::create([
-                    'amount' => (int)($final_amount * 100), // Stripe en centimes
-                    'currency' => 'eur',
-                    'customer' => $customer->id,
-                    'payment_method_types' => ['card'],
-                    'metadata' => [
-                        'subscription_id' => $subscription->id,
-                        'reference' => $subscription->reference_transaction
-                    ],
-                ]);
-                $clientSecret = $paymentIntent->client_secret;
-            } catch (\Exception $e) {
-                \Log::error("Stripe Error: " . $e->getMessage());
-            }
-        } elseif (in_array($request->moyen_paiement, ['orange_money', 'mtn_momo'])) {
-            // CoolPay Mobile Money (CURL Version)
-            try {
-                $user = Auth::user();
-                $coolpayPublicKey = config('services.coolpay.public_key') ?? env('COOLPAY_PUBLIC_KEY');
-                $testAmount = config('services.coolpay.test_amount') ?? env('COOLPAY_TEST_AMOUNT');
-                
-                $fields = [
-                    'transaction_amount' => $testAmount ? (int)$testAmount : (int)$final_amount,
-                    'transaction_currency' => 'XAF',
-                    'transaction_reason' => "Souscription PEK: {$product->libelle}",
-                    'app_transaction_ref' => $subscription->reference_transaction,
-                    'customer_phone_number' => $request->phone_number ?? $user->phone,
-                    'customer_name' => "{$user->first_name} {$user->last_name}", 
-                    'customer_email' => $user->email,
-                    'customer_lang' => 'fr'
-                ];
-
-                $logFields = $fields;
-                $logFields['customer_phone_number'] = substr($fields['customer_phone_number'], 0, 4) . '****' . substr($fields['customer_phone_number'], -2);
-                $logFields['customer_email'] = substr($fields['customer_email'], 0, 3) . '****@' . explode('@', $fields['customer_email'])[1];
-
-                \Log::info("CoolPay Request to " . (env('APP_ENV') === 'production' ? 'PROD' : 'SANDBOX') . ": ", $logFields);
-
-                $curl = curl_init();
-                curl_setopt_array($curl, array(
-                  CURLOPT_URL => "https://my-coolpay.com/api/{$coolpayPublicKey}/payin",
-                  CURLOPT_RETURNTRANSFER => true,
-                  CURLOPT_ENCODING => '',
-                  CURLOPT_MAXREDIRS => 10,
-                  CURLOPT_TIMEOUT => 0,
-                  CURLOPT_FOLLOWLOCATION => true,
-                  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                  CURLOPT_CUSTOMREQUEST => 'POST',
-                  CURLOPT_POSTFIELDS => json_encode($fields),
-                  CURLOPT_SSL_VERIFYPEER => env('APP_ENV') === 'production', 
-                  CURLOPT_HTTPHEADER => array(
-                    'Content-Type: application/json',
-                    'Accept: application/json',
-                    'Expect:'
-                  ),
-                ));
-
-                $response = curl_exec($curl);
-                $err = curl_error($curl);
-                $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-                curl_close($curl);
-
-                if ($err) {
-                    \Log::error("CoolPay CURL Error: " . $err);
-                    
-                    // Pour les besoins de test (si cURL/SSL échoue en local ou sur le serveur de test)
-                    if (env('APP_ENV') !== 'production' || env('COOLPAY_SIMULATION', true)) {
-                        \Log::warning("Local CoolPay request failed. Simulating successful mock response for testing.");
-                        $mockRef = 'MOCK_REF_' . time();
-                        $subscription->update([
-                            'coolpay_transaction_ref' => $mockRef
-                        ]);
-                        $clientSecret = [
-                            'payment_status' => 'success',
-                            'ussd_code' => '*126*4*1#',
-                            'transaction_ref' => $mockRef
-                        ];
-                    } else {
-                        // Message propre et sécurisé pour le client final en production
-                        return response()->json(['error' => "Le service de paiement mobile est temporairement indisponible. Veuillez réessayer dans quelques instants."], 500);
-                    }
-                } else {
-                    $coolpayData = json_decode($response, true);
-                    \Log::info("CoolPay Response: ", $coolpayData ?? []);
-                    
-                    if ($httpCode >= 400 || (isset($coolpayData['status']) && $coolpayData['status'] === 'error')) {
-                        $errorMessage = $coolpayData['message'] 
-                            ?? $coolpayData['error'] 
-                            ?? $coolpayData['description'] 
-                            ?? $coolpayData['errorMessage'] 
-                            ?? 'Paiement refusé par l\'opérateur';
-
-                        return response()->json([
-                            'error' => $errorMessage,
-                            'details' => $coolpayData
-                        ], 400);
-                    }
-                    
-                    // Sauvegarder la référence CoolPay en base
-                    if (isset($coolpayData['transaction_ref'])) {
-                        $subscription->update([
-                            'coolpay_transaction_ref' => $coolpayData['transaction_ref']
-                        ]);
-                    }
-
-                    // On ne renvoie que le strict nécessaire
-                    $clientSecret = [
-                        'payment_status' => $coolpayData['status'] ?? 'pending',
-                        'ussd_code' => $coolpayData['ussd'] ?? null,
-                        'transaction_ref' => $coolpayData['transaction_ref'] ?? null
-                    ]; 
-                }
-            } catch (\Exception $e) {
-                \Log::error("CoolPay Exception: " . $e->getMessage());
-                if (env('APP_ENV') !== 'production') {
-                    return response()->json(['error' => "Erreur locale de test : " . $e->getMessage()], 500);
-                }
-                return response()->json(['error' => "Le service de paiement mobile est temporairement indisponible. Veuillez réessayer."], 500);
-            }
-        } elseif ($request->moyen_paiement === 'stripe') {
-            // Manual Virement (using DB settings)
-            $bank = BankDetail::where('is_active', true)->first();
-            $pekBankDetails = [
-                'bank_name' => $bank ? $bank->bank_name : 'Banque Atlantique',
-                'iban' => $bank ? $bank->iban : env('PEK_BANK_IBAN'),
-                'rib' => $bank ? $bank->rib : env('PEK_BANK_RIB'),
-                'swift' => $bank ? $bank->swift : env('PEK_BANK_SWIFT'),
-            ];
-        }
+        // Bypassed automatic gateways since all subscriptions are manual requests now.
+        $pekBankDetails = BankDetail::where('is_active', true)->first();
 
         // 3. Create In-App Notification
         Notification::create([

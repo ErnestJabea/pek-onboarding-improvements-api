@@ -47,6 +47,21 @@ class BankDetailResource extends Resource
                     ->label('Compte Actif')
                     ->required()
                     ->default(true),
+                Forms\Components\Textarea::make('om_instructions')
+                    ->label('Procédure de paiement Orange Money')
+                    ->helperText('Saisissez les étapes de paiement numérotées pour Orange Money.')
+                    ->rows(5)
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('momo_instructions')
+                    ->label('Procédure de paiement MTN MoMo')
+                    ->helperText('Saisissez les étapes de paiement numérotées pour MTN Mobile Money.')
+                    ->rows(5)
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('bank_instructions')
+                    ->label('Procédure de paiement par Virement Bancaire')
+                    ->helperText('Saisissez les étapes de paiement numérotées pour le Virement.')
+                    ->rows(5)
+                    ->columnSpanFull(),
             ]);
     }
 
