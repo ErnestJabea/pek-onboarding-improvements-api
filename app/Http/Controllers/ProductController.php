@@ -11,7 +11,7 @@ class ProductController extends Controller
     {
         // Cache des produits pendant 5 minutes pour une vitesse éclair
         return \Cache::remember('products_list', 300, function() {
-            return Product::with(['vls' => function($query) {
+            return Product::where('is_active', true)->with(['vls' => function($query) {
                 $query->orderBy('date_vl', 'desc');
             }])->get()->map(function($product) {
                 $latestVl = $product->vls->first();

@@ -267,10 +267,12 @@
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:21px;letter-spacing:0;color:#999999;font-size:14px">
                                                                                     Ce message a été envoyé
                                                                                     automatiquement
-                                                                                    par PEK.</p>
+                                                                                    par KORI ASSET MANAGEMENT.</p>
                                                                                 <p
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:21px;letter-spacing:0;color:#999999;font-size:14px">
-                                                                                    Fait avec ❤️ au Cameroun</p>
+                                                                                    By <a
+                                                                                        href="https://e-jabbing.com">E-jabbing</a>
+                                                                                </p>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>

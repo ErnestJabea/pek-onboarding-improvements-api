@@ -26,4 +26,5 @@ return [
     'date' => 'Date',
     'city' => 'City',
     'country' => 'Country of residence',
+    'is_active' => 'Active',
 ];

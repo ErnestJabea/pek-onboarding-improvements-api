@@ -49,6 +49,10 @@ class ProductResource extends Resource
                     ->label(__('messages.seuil_minimum'))
                     ->required()
                     ->numeric(),
+                Forms\Components\Toggle::make('is_active')
+                    ->label(__('messages.is_active'))
+                    ->default(true)
+                    ->required(),
             ]);
     }
 
@@ -66,6 +70,9 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('seuil_minimum')
                     ->label(__('messages.seuil_minimum'))
                     ->numeric()
+                    ->sortable(),
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->label(__('messages.is_active'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('messages.created_at'))

@@ -154,7 +154,7 @@ class OnboardingController extends Controller
             // 8. Create In-App Notification
             Notification::create([
                 'user_id' => $session->user_id,
-                'title' => 'Onboarding validé ! 🎉',
+                'title' => 'Onboarding validé ! ',
                 'body' => "Votre dossier d'onboarding a été soumis avec succès pour validation.",
                 'type' => 'success'
             ]);

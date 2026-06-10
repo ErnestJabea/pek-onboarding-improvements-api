@@ -28,6 +28,9 @@ class SubscriptionController extends Controller
         ]);
 
         $product = Product::find($request->product_id);
+        if (!$product || !$product->is_active) {
+            return response()->json(['message' => 'Ce produit n\'est pas disponible à la souscription car il est désactivé.'], 422);
+        }
         $montant_total = $request->montant_total ?? ($request->nb_parts * $product->vl);
         $final_amount = $montant_total + ($montant_total * 0.01);
 

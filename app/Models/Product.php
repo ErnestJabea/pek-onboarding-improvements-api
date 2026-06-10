@@ -14,11 +14,13 @@ class Product extends Model
         'description',
         'vl',
         'seuil_minimum',
+        'is_active',
     ];
 
     protected $casts = [
         'vl' => 'decimal:4',
         'seuil_minimum' => 'decimal:2',
+        'is_active' => 'boolean',
     ];
 
     public function subscriptions()

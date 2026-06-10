@@ -21,7 +21,7 @@
                                                         <tr>
                                                             <td align="center" style="padding:0;margin:0;width:300px"
                                                                 valign="top">
-                                                                 <table cellpadding="0" cellspacing="0"
+                                                                <table cellpadding="0" cellspacing="0"
                                                                     role="presentation"
                                                                     style="border-collapse:collapse;border-spacing:0px"
                                                                     width="100%">
@@ -149,74 +149,204 @@
                                                                                             <tr>
                                                                                                 <td align="left"
                                                                                                     style="font-size:16px;color:#333333;padding-bottom:15px;line-height:24px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                    Félicitations, vous avez complété avec succès votre parcours d'onboarding pour le <strong>PLAN D'ÉPARGNE KORI</strong>.
+                                                                                                    Félicitations, vous
+                                                                                                    avez complété avec
+                                                                                                    succès votre
+                                                                                                    parcours
+                                                                                                    d'onboarding pour le
+                                                                                                    <strong>PLAN
+                                                                                                        D'ÉPARGNE
+                                                                                                        KORI</strong>.
                                                                                                 </td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <td align="left"
                                                                                                     style="font-size:15px;color:#333333;padding-bottom:15px;line-height:24px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                    Nous avons déterminé votre profil de risque :<br>
-                                                                                                    <strong>Profil : {{ $payload['risk_profile'] ?? 'En attente' }}</strong>
+                                                                                                    Nous avons déterminé
+                                                                                                    votre profil de
+                                                                                                    risque :<br>
+                                                                                                    <strong>Profil :
+                                                                                                        {{ $payload['risk_profile'] ?? 'En attente' }}</strong>
                                                                                                 </td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <td align="left"
                                                                                                     style="font-size:14px;color:#555555;padding-bottom:20px;line-height:22px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                    Vous trouverez en pièce jointe de cet e-mail votre <strong>Fiche de Profil Investisseur</strong>.
+                                                                                                    Vous trouverez en
+                                                                                                    pièce jointe de cet
+                                                                                                    e-mail votre
+                                                                                                    <strong>Fiche de
+                                                                                                        Profil
+                                                                                                        Investisseur</strong>.
                                                                                                 </td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <td align="left"
                                                                                                     style="font-size:14px;color:#555555;line-height:22px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                    Pour finaliser définitivement l'ouverture de votre compte auprès de <strong>Kori Asset Management</strong>, veuillez préparer et fournir à nos agents les justificatifs suivants :
-                                                                                                    <ul style="padding-left: 20px; margin-top: 10px;">
-                                                                                                        <li>Copie certifiée conforme de votre pièce d'identité en cours de validité ({{ $payload['piece'] ?? 'CNI/Passeport' }} n° {{ $payload['num_piece'] ?? '' }})</li>
-                                                                                                        <li>Justificatif de domicile de moins de 3 mois (facture d'eau, d'électricité ou plan de localisation)</li>
-                                                                                                        <li>Deux (02) photos d'identité récentes</li>
-                                                                                                        <li>Justificatif de l'origine de vos fonds (bulletin de paie récent, relevé de compte bancaire, ou registre de commerce)</li>
+                                                                                                    Pour finaliser
+                                                                                                    définitivement
+                                                                                                    l'ouverture de votre
+                                                                                                    compte auprès de
+                                                                                                    <strong>Kori Asset
+                                                                                                        Management</strong>,
+                                                                                                    veuillez préparer et
+                                                                                                    fournir à nos agents
+                                                                                                    les justificatifs
+                                                                                                    suivants :
+                                                                                                    <ul
+                                                                                                        style="padding-left: 20px; margin-top: 10px;">
+                                                                                                        <li>Copie
+                                                                                                            certifiée
+                                                                                                            conforme de
+                                                                                                            votre pièce
+                                                                                                            d'identité
+                                                                                                            en cours de
+                                                                                                            validité
+                                                                                                            ({{ $payload['piece'] ?? 'CNI/Passeport' }}
+                                                                                                            n°
+                                                                                                            {{ $payload['num_piece'] ?? '' }})
+                                                                                                        </li>
+                                                                                                        <li>Justificatif
+                                                                                                            de domicile
+                                                                                                            de moins de
+                                                                                                            3 mois
+                                                                                                            (facture
+                                                                                                            d'eau,
+                                                                                                            d'électricité
+                                                                                                            ou plan de
+                                                                                                            localisation)
+                                                                                                        </li>
+                                                                                                        <li>Deux (02)
+                                                                                                            photos
+                                                                                                            d'identité
+                                                                                                            récentes
+                                                                                                        </li>
+                                                                                                        <li>Justificatif
+                                                                                                            de l'origine
+                                                                                                            de vos fonds
+                                                                                                            (bulletin de
+                                                                                                            paie récent,
+                                                                                                            relevé de
+                                                                                                            compte
+                                                                                                            bancaire, ou
+                                                                                                            registre de
+                                                                                                            commerce)
+                                                                                                        </li>
                                                                                                     </ul>
                                                                                                 </td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <td align="left"
                                                                                                     style="font-size:14px;color:#555555;padding-top:15px;line-height:22px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                    Nos équipes vont étudier votre dossier et vous recevrez une notification dès que votre compte sera entièrement activé pour les versements.
+                                                                                                    Nos équipes vont
+                                                                                                    étudier votre
+                                                                                                    dossier et vous
+                                                                                                    recevrez une
+                                                                                                    notification dès que
+                                                                                                    votre compte sera
+                                                                                                    entièrement activé
+                                                                                                    pour les versements.
                                                                                                 </td>
                                                                                             </tr>
                                                                                         @else
                                                                                             <tr>
                                                                                                 <td align="left"
                                                                                                     style="font-size:16px;color:#333333;padding-bottom:15px;line-height:24px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                    Un nouveau client a terminé son parcours d'onboarding sur PEK.
+                                                                                                    Un nouveau client a
+                                                                                                    terminé son parcours
+                                                                                                    d'onboarding sur
+                                                                                                    PEK.
                                                                                                 </td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <td align="left"
                                                                                                     style="font-size:14px;color:#333333;padding-bottom:20px;line-height:22px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                    <strong>Détails du Client :</strong>
-                                                                                                    <ul style="padding-left: 20px; margin-top: 10px;">
-                                                                                                        <li><strong>Nom Complet</strong> : {{ strtoupper($user->last_name) }} {{ $user->first_name }}</li>
-                                                                                                        <li><strong>E-mail</strong> : {{ $user->email }}</li>
-                                                                                                        <li><strong>Téléphone</strong> : {{ $payload['tel'] ?? $user->phone }}</li>
-                                                                                                        <li><strong>Nationalité</strong> : {{ $payload['nat'] ?? '' }}</li>
-                                                                                                        <li><strong>Profession</strong> : {{ $payload['profession'] ?? '' }}</li>
-                                                                                                        <li><strong>Employeur</strong> : {{ $payload['employeur'] ?? '' }}</li>
+                                                                                                    <strong>Détails du
+                                                                                                        Client
+                                                                                                        :</strong>
+                                                                                                    <ul
+                                                                                                        style="padding-left: 20px; margin-top: 10px;">
+                                                                                                        <li><strong>Nom
+                                                                                                                Complet</strong>
+                                                                                                            :
+                                                                                                            {{ strtoupper($user->last_name) }}
+                                                                                                            {{ $user->first_name }}
+                                                                                                        </li>
+                                                                                                        <li><strong>E-mail</strong>
+                                                                                                            :
+                                                                                                            {{ $user->email }}
+                                                                                                        </li>
+                                                                                                        <li><strong>Téléphone</strong>
+                                                                                                            :
+                                                                                                            {{ $payload['tel'] ?? $user->phone }}
+                                                                                                        </li>
+                                                                                                        <li><strong>Nationalité</strong>
+                                                                                                            :
+                                                                                                            {{ $payload['nat'] ?? '' }}
+                                                                                                        </li>
+                                                                                                        <li><strong>Profession</strong>
+                                                                                                            :
+                                                                                                            {{ $payload['profession'] ?? '' }}
+                                                                                                        </li>
+                                                                                                        <li><strong>Employeur</strong>
+                                                                                                            :
+                                                                                                            {{ $payload['employeur'] ?? '' }}
+                                                                                                        </li>
                                                                                                     </ul>
                                                                                                 </td>
                                                                                             </tr>
                                                                                             <tr>
                                                                                                 <td align="left"
                                                                                                     style="font-size:14px;color:#333333;padding-bottom:20px;line-height:22px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                    <strong>Analyse Réglementaire :</strong>
-                                                                                                    <ul style="padding-left: 20px; margin-top: 10px;">
-                                                                                                        <li><strong>Niveau de Risque Client</strong> : <strong>{{ $session->risk_level }}</strong></li>
-                                                                                                        <li><strong>Profil Investisseur</strong> : {{ $payload['risk_profile'] ?? 'Non calculé' }} (Score : {{ $payload['risk_score'] ?? '0' }}/23)</li>
-                                                                                                        <li><strong>PPE (Personne Politiquement Exposée)</strong> : {{ $payload['ppe'] ?? 'Non' }}</li>
-                                                                                                        <li><strong>Indicateurs de Risque Spécifiques :</strong>
-                                                                                                            <ul style="padding-left: 20px; margin-top: 5px;">
-                                                                                                                <li>Pays à risque : {{ $payload['pays_risque'] ?? 'Non' }}</li>
-                                                                                                                <li>Secteur sensible : {{ $payload['secteur_sensible'] ?? 'Non' }}</li>
-                                                                                                                <li>Condamnation antérieure : {{ $payload['condamnation'] ?? 'Non' }}</li>
+                                                                                                    <strong>Analyse
+                                                                                                        Réglementaire
+                                                                                                        :</strong>
+                                                                                                    <ul
+                                                                                                        style="padding-left: 20px; margin-top: 10px;">
+                                                                                                        <li><strong>Niveau
+                                                                                                                de
+                                                                                                                Risque
+                                                                                                                Client</strong>
+                                                                                                            :
+                                                                                                            <strong>{{ $session->risk_level }}</strong>
+                                                                                                        </li>
+                                                                                                        <li><strong>Profil
+                                                                                                                Investisseur</strong>
+                                                                                                            :
+                                                                                                            {{ $payload['risk_profile'] ?? 'Non calculé' }}
+                                                                                                            (Score :
+                                                                                                            {{ $payload['risk_score'] ?? '0' }}/23)
+                                                                                                        </li>
+                                                                                                        <li><strong>PPE
+                                                                                                                (Personne
+                                                                                                                Politiquement
+                                                                                                                Exposée)</strong>
+                                                                                                            :
+                                                                                                            {{ $payload['ppe'] ?? 'Non' }}
+                                                                                                        </li>
+                                                                                                        <li><strong>Indicateurs
+                                                                                                                de
+                                                                                                                Risque
+                                                                                                                Spécifiques
+                                                                                                                :</strong>
+                                                                                                            <ul
+                                                                                                                style="padding-left: 20px; margin-top: 5px;">
+                                                                                                                <li>Pays
+                                                                                                                    à
+                                                                                                                    risque
+                                                                                                                    :
+                                                                                                                    {{ $payload['pays_risque'] ?? 'Non' }}
+                                                                                                                </li>
+                                                                                                                <li>Secteur
+                                                                                                                    sensible
+                                                                                                                    :
+                                                                                                                    {{ $payload['secteur_sensible'] ?? 'Non' }}
+                                                                                                                </li>
+                                                                                                                <li>Condamnation
+                                                                                                                    antérieure
+                                                                                                                    :
+                                                                                                                    {{ $payload['condamnation'] ?? 'Non' }}
+                                                                                                                </li>
                                                                                                             </ul>
                                                                                                         </li>
                                                                                                     </ul>
@@ -226,14 +356,33 @@
                                                                                                 <tr>
                                                                                                     <td align="left"
                                                                                                         style="padding:15px;background-color:#fee2e2;border-left:4px solid #dc2626;border-radius:4px;font-size:14px;color:#991b1b;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:20px;margin-bottom:15px;">
-                                                                                                        <strong>⚠️ ATTENTION :</strong> Ce dossier comporte des alertes LAB-FT. Un examen renforcé est nécessaire avant toute approbation.
+                                                                                                        <strong>⚠️
+                                                                                                            ATTENTION
+                                                                                                            :</strong>
+                                                                                                        Ce dossier
+                                                                                                        comporte des
+                                                                                                        alertes LAB-FT.
+                                                                                                        Un examen
+                                                                                                        renforcé est
+                                                                                                        nécessaire avant
+                                                                                                        toute
+                                                                                                        approbation.
                                                                                                     </td>
                                                                                                 </tr>
                                                                                             @endif
                                                                                             <tr>
                                                                                                 <td align="left"
                                                                                                     style="font-size:14px;color:#555555;padding-top:15px;line-height:22px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                    Les trois documents contractuels (Fiche KYC, Profil Investisseur, Questionnaire LAB-FT) contenant la signature électronique du client sont joints à cet e-mail.
+                                                                                                    Les trois documents
+                                                                                                    contractuels (Fiche
+                                                                                                    KYC, Profil
+                                                                                                    Investisseur,
+                                                                                                    Questionnaire
+                                                                                                    LAB-FT) contenant la
+                                                                                                    signature
+                                                                                                    électronique du
+                                                                                                    client sont joints à
+                                                                                                    cet e-mail.
                                                                                                 </td>
                                                                                             </tr>
                                                                                         @endif
@@ -312,7 +461,9 @@
                                                                                     par PEK.</p>
                                                                                 <p
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:21px;letter-spacing:0;color:#999999;font-size:14px">
-                                                                                    Fait avec ❤️ au Cameroun</p>
+                                                                                    By <a
+                                                                                        href="https://e-jabbing.com">E-jabbing</a>
+                                                                                </p>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
