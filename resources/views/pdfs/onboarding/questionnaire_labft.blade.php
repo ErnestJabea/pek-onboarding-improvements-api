@@ -161,12 +161,11 @@
     </div>
 
     <h1>Questionnaire LAB/FT</h1>
-    <div class="subtitle">Lutte contre le Blanchiment de Capitaux et le Financement du Terrorisme - Règlement COBAC
-        R-2005/01</div>
+    <div class="subtitle">Lutte contre le Blanchiment de Capitaux et le Financement du Terrorisme </div>
 
     @if ($session->risk_level === 'HIGH')
         <div class="alert-box">
-            <strong>⚠️ EXAMEN RENFORCÉ REQUIS :</strong> Des indicateurs de vigilance réglementaire (PPE ou exposition
+            <strong>EXAMEN RENFORCÉ REQUIS :</strong> Des indicateurs de vigilance réglementaire (PPE ou exposition
             géographique/sectorielle) ont été cochés. Ce dossier doit faire l'objet d'une validation manuelle par
             l'équipe conformité.
         </div>

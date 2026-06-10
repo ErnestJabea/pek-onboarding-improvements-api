@@ -177,7 +177,7 @@
     </div>
 
     <h1>Questionnaire de Profil Investisseur</h1>
-    <div class="subtitle">Évaluation réglementaire de convenance de l'investisseur - Règlement Général COSUMAF</div>
+    <div class="subtitle">Évaluation du profil de l'investisseur - Règlement Général COSUMAF</div>
 
     <div class="result-box">
         <div class="result-title">Profil d'Investissement Validé</div>

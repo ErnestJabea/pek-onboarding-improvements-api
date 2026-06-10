@@ -195,9 +195,7 @@
                                                                                                     suivants :
                                                                                                     <ul
                                                                                                         style="padding-left: 20px; margin-top: 10px;">
-                                                                                                        <li>Copie
-                                                                                                            certifiée
-                                                                                                            conforme de
+                                                                                                        <li>Copie de
                                                                                                             votre pièce
                                                                                                             d'identité
                                                                                                             en cours de
@@ -461,8 +459,8 @@
                                                                                     par PEK.</p>
                                                                                 <p
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:21px;letter-spacing:0;color:#999999;font-size:14px">
-                                                                                    By <a
-                                                                                        href="https://e-jabbing.com" style="color: #491d00; text-decoration: none; font-weight: bold;">E-jabbing</a>
+                                                                                    By <a href="https://e-jabbing.com"
+                                                                                        style="color: #491d00; text-decoration: none; font-weight: bold;">E-jabbing</a>
                                                                                 </p>
                                                                             </td>
                                                                         </tr>
