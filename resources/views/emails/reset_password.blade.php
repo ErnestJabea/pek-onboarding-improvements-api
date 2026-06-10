@@ -30,7 +30,7 @@
                                                                             <td align="center"
                                                                                 style="padding:0;margin:0;font-size:0px">
                                                                                 <h1
-                                                                                    style="color:#00236B; font-family: sans-serif; font-weight: 900; margin: 0;">
+                                                                                    style="color:#491d00; font-family: sans-serif; font-weight: 900; margin: 0;">
                                                                                     PEK</h1>
                                                                                 <p
                                                                                     style="color:#666; font-family: sans-serif; font-size: 10px; margin: 0; letter-spacing: 2px;">
@@ -60,8 +60,8 @@
                                     style="border-collapse:collapse;border-spacing:0px;width:600px">
                                     <tbody>
                                         <tr>
-                                            <td align="left" bgcolor="#00236B"
-                                                style="padding:40px;margin:0;background-color:#00236b;border-radius:5px 5px 0 0">
+                                            <td align="left" bgcolor="#491d00"
+                                                style="padding:40px;margin:0;background-color:#491d00;border-radius:5px 5px 0 0">
                                                 <table align="right" cellpadding="0" cellspacing="0" role="none"
                                                     style="border-collapse:collapse;border-spacing:0px;float:right"
                                                     width="100%">
@@ -116,7 +116,7 @@
                                                                                     Douala, Cameroun<br>
                                                                                     <a href="https://pek.koriassetmanagement.com"
                                                                                         target="_blank"
-                                                                                        style="color:#00236B; text-decoration: none;">https://pek.koriassetmanagement.com</a>
+                                                                                        style="color:#491d00; text-decoration: none; font-weight: bold;">https://pek.koriassetmanagement.com</a>
                                                                                 </p>
                                                                                 <p align="left"
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">
@@ -155,7 +155,7 @@
                                                                                                     <tbody>
                                                                                                         <tr>
                                                                                                             <td
-                                                                                                                style="font-size:30px;letter-spacing:4px;font-weight:bold;color:#00236B;padding:18px 28px;text-align:center">
+                                                                                                                style="font-size:30px;letter-spacing:4px;font-weight:bold;color:#491d00;padding:18px 28px;text-align:center">
                                                                                                                 {{ $tempPassword }}
                                                                                                             </td>
                                                                                                         </tr>
@@ -271,7 +271,7 @@
                                                                                 <p
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:21px;letter-spacing:0;color:#999999;font-size:14px">
                                                                                     By <a
-                                                                                        href="https://e-jabbing.com">E-jabbing</a>
+                                                                                        href="https://e-jabbing.com" style="color: #491d00; text-decoration: none; font-weight: bold;">E-jabbing</a>
                                                                                 </p>
                                                                             </td>
                                                                         </tr>

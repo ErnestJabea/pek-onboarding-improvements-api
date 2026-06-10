@@ -40,7 +40,7 @@ class SubscriptionMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.subscription_receipt',
+            view: 'emails.subscription_receipt',
         );
     }
 

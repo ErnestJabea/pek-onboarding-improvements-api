@@ -21,7 +21,7 @@
                                                         <tr>
                                                             <td align="center" style="padding:0;margin:0;width:300px"
                                                                 valign="top">
-                                                                 <table cellpadding="0" cellspacing="0"
+                                                                <table cellpadding="0" cellspacing="0"
                                                                     role="presentation"
                                                                     style="border-collapse:collapse;border-spacing:0px"
                                                                     width="100%">
@@ -30,7 +30,7 @@
                                                                             <td align="center"
                                                                                 style="padding:0;margin:0;font-size:0px">
                                                                                 <h1
-                                                                                    style="color:#00236B; font-family: sans-serif; font-weight: 900; margin: 0; font-size: 28px;">
+                                                                                    style="color:#491d00; font-family: sans-serif; font-weight: 900; margin: 0; font-size: 28px;">
                                                                                     PEK</h1>
                                                                                 <p
                                                                                     style="color:#666; font-family: sans-serif; font-size: 10px; margin: 0; letter-spacing: 2px;">
@@ -60,8 +60,8 @@
                                     style="border-collapse:collapse;border-spacing:0px;width:600px">
                                     <tbody>
                                         <tr>
-                                            <td align="left" bgcolor="#00236B"
-                                                style="padding:40px;margin:0;background-color:#00236b;border-radius:5px 5px 0 0">
+                                            <td align="left" bgcolor="#491d00"
+                                                style="padding:40px;margin:0;background-color:#491d00;border-radius:5px 5px 0 0">
                                                 <table align="right" cellpadding="0" cellspacing="0" role="none"
                                                     style="border-collapse:collapse;border-spacing:0px;float:right"
                                                     width="100%">
@@ -110,10 +110,11 @@
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">
                                                                                     <br>
                                                                                     PEK - Plan d'Épargne Kori<br>
+                                                                                    KORI ASSET MANAGEMENT<br>
                                                                                     Douala, Cameroun<br>
                                                                                     <a href="https://pek.koriassetmanagement.com"
                                                                                         target="_blank"
-                                                                                        style="color:#00236B; text-decoration: none;">https://pek.koriassetmanagement.com</a>
+                                                                                        style="color:#491d00; text-decoration: none; font-weight: bold;">https://pek.koriassetmanagement.com</a>
                                                                                 </p>
                                                                                 <p align="left"
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">
@@ -126,7 +127,8 @@
                                                                                 </p>
                                                                                 <p align="left"
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">
-                                                                                    Bonjour {{ $user->first_name }} {{ $user->last_name }},</p>
+                                                                                    Bonjour {{ $user->first_name }}
+                                                                                    {{ $user->last_name }},</p>
                                                                                 <p align="left"
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">
                                                                                 </p>
@@ -137,20 +139,36 @@
                                                                                         <tr>
                                                                                             <td align="left"
                                                                                                 style="font-size:16px;color:#333333;padding-bottom:20px;line-height:24px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                Après examen de votre dossier d'onboarding pour le <strong>PLAN D'ÉPARGNE KORI</strong>, notre équipe de conformité a identifié des informations incorrectes ou incomplètes :
+                                                                                                Après examen de votre
+                                                                                                dossier d'onboarding
+                                                                                                pour le <strong>PLAN
+                                                                                                    D'ÉPARGNE
+                                                                                                    KORI</strong>, notre
+                                                                                                équipe de conformité a
+                                                                                                identifié des
+                                                                                                informations incorrectes
+                                                                                                ou incomplètes :
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="left"
                                                                                                 style="padding:15px;background-color:#fee2e2;border-left:4px solid #dc2626;border-radius:4px;font-size:15px;color:#991b1b;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:22px;">
-                                                                                                <strong>Motif du rejet :</strong><br>
+                                                                                                <strong>Motif du rejet
+                                                                                                    :</strong><br>
                                                                                                 {{ $reason }}
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="left"
                                                                                                 style="font-size:14px;color:#555555;padding-top:20px;line-height:22px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                Pour régulariser votre situation, veuillez vous connecter à votre application mobile PEK et corriger / soumettre à nouveau vos informations dans votre parcours d'onboarding.
+                                                                                                Pour régulariser votre
+                                                                                                situation, veuillez vous
+                                                                                                connecter à votre
+                                                                                                application mobile PEK
+                                                                                                et corriger / soumettre
+                                                                                                à nouveau vos
+                                                                                                informations dans votre
+                                                                                                parcours d'onboarding.
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -158,7 +176,15 @@
                                                                                                 style="padding:30px 0 10px 0">
                                                                                                 <hr
                                                                                                     style="border:none;border-top:1px solid #eeeeee">
-                                                                                                <p align="center" style="font-size: 12px; color: #999999;font-family:arial,'helvetica neue',helvetica,sans-serif;">Vous recevez cet email car votre dossier d'onboarding sur la plateforme PEK a fait l'objet d'un examen réglementaire.</p>
+                                                                                                <p align="center"
+                                                                                                    style="font-size: 12px; color: #999999;font-family:arial,'helvetica neue',helvetica,sans-serif;">
+                                                                                                    Vous recevez cet
+                                                                                                    email car votre
+                                                                                                    dossier d'onboarding
+                                                                                                    sur la plateforme
+                                                                                                    PEK a fait l'objet
+                                                                                                    d'un examen
+                                                                                                    réglementaire.</p>
                                                                                             </td>
                                                                                         </tr>
                                                                                     </tbody>
@@ -229,7 +255,9 @@
                                                                                     par PEK.</p>
                                                                                 <p
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:21px;letter-spacing:0;color:#999999;font-size:14px">
-                                                                                    Fait avec ❤️ au Cameroun</p>
+                                                                                    By <a
+                                                                                        href="https://e-jabbing.com">E-jabbing</a>
+                                                                                </p>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>

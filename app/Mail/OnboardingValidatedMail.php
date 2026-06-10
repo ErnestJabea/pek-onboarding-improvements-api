@@ -31,7 +31,7 @@ class OnboardingValidatedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'FCP KORI SÉRÉNITÉ - Votre Compte est Activé ! 🎉',
+            subject: 'FCP KORI SÉRÉNITÉ - Votre Compte est Activé !',
         );
     }
 
