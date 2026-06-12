@@ -19,6 +19,51 @@ Route::get('/run-migrations', function() {
     return Artisan::output();
 });
 
+Route::get('/clear-cache', function() {
+    Artisan::call('optimize:clear');
+    return Artisan::output() ?: "Cache en ligne vide avec succes !";
+});
+
+Route::get('/diagnose-queue', function() {
+    $results = [];
+    try {
+        $results['db_connection'] = config('database.default');
+        $results['queue_connection'] = config('queue.default');
+        
+        // Count pending jobs
+        if (\Illuminate\Support\Facades\Schema::hasTable('jobs')) {
+            $results['pending_jobs_count'] = \Illuminate\Support\Facades\DB::table('jobs')->count();
+            $results['pending_jobs_sample'] = \Illuminate\Support\Facades\DB::table('jobs')->limit(5)->get()->toArray();
+        } else {
+            $results['pending_jobs_table'] = "Table 'jobs' does not exist.";
+        }
+        
+        // Count failed jobs
+        if (\Illuminate\Support\Facades\Schema::hasTable('failed_jobs')) {
+            $results['failed_jobs_count'] = \Illuminate\Support\Facades\DB::table('failed_jobs')->count();
+            $results['failed_jobs_sample'] = \Illuminate\Support\Facades\DB::table('failed_jobs')->latest()->limit(5)->get()->toArray();
+        } else {
+            $results['failed_jobs_table'] = "Table 'failed_jobs' does not exist.";
+        }
+        
+        // Test mail sending synchronously (without queue)
+        if (request()->has('test_email')) {
+            $testEmail = request()->query('test_email');
+            \Illuminate\Support\Facades\Mail::raw("Ceci est un email de test pour diagnostiquer la configuration SMTP de l'API PEK.", function($message) use ($testEmail) {
+                $message->to($testEmail)->subject("Test SMTP PEK");
+            });
+            $results['smtp_test'] = "Email de test envoye avec succes a {$testEmail} (en direct, sans queue).";
+        } else {
+            $results['smtp_test'] = "Ajoutez ?test_email=votre_email@example.com a l'URL pour tester l'envoi SMTP en direct.";
+        }
+    } catch (\Exception $e) {
+        $results['error'] = $e->getMessage();
+        $results['trace'] = $e->getTraceAsString();
+    }
+    
+    return response()->json($results);
+});
+
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
