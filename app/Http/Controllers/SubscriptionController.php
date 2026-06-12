@@ -116,11 +116,7 @@ class SubscriptionController extends Controller
                 'body' => "Votre paiement de test pour {$subscription->product->libelle} a été validé.",
                 'type' => 'success'
             ]);
-            try {
-                \App\Jobs\ProcessSubscriptionReceipt::dispatch($subscription);
-            } catch (\Exception $e) {
-                \Log::error("Failed to dispatch ProcessSubscriptionReceipt: " . $e->getMessage());
-            }
+
             return response()->json([
                 'status' => 'success',
                 'subscription' => $subscription->fresh('product'),
@@ -155,12 +151,7 @@ class SubscriptionController extends Controller
                         'type' => 'success'
                     ]);
 
-                    // Send email/receipt
-                    try {
-                        \App\Jobs\ProcessSubscriptionReceipt::dispatch($subscription);
-                    } catch (\Exception $e) {
-                        \Log::error("Failed to dispatch ProcessSubscriptionReceipt: " . $e->getMessage());
-                    }
+
 
                     return response()->json([
                         'status' => 'success',

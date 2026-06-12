@@ -79,7 +79,12 @@
                                                                                 style="padding:0;margin:0">
                                                                                 <h1
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;letter-spacing:0;font-size:28px;font-style:normal;font-weight:bold;line-height:34px!important;color:#ffffff">
-                                                                                    Reçu de Souscription</h1>
+                                                                                    @if($subscription->statut === 'Succès')
+                                                                                        Reçu de Souscription Confirmé
+                                                                                    @else
+                                                                                        Reçu de Souscription
+                                                                                    @endif
+                                                                                </h1>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -138,7 +143,11 @@
                                                                                         <tr>
                                                                                             <td align="left"
                                                                                                 style="font-size:16px;color:#333333;padding-bottom:20px;line-height:24px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                Votre demande de souscription au fonds <strong>{{ $subscription->product->libelle }}</strong> a bien été enregistrée.
+                                                                                                @if($subscription->statut === 'Succès')
+                                                                                                    Votre souscription au fonds <strong>{{ $subscription->product->libelle }}</strong> a été validée avec succès.
+                                                                                                @else
+                                                                                                    Votre demande de souscription au fonds <strong>{{ $subscription->product->libelle }}</strong> a bien été enregistrée.
+                                                                                                @endif
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -173,7 +182,11 @@
                                                                                                         </tr>
                                                                                                         <tr>
                                                                                                             <td style="padding:12px 15px;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#666666;"><strong>Statut :</strong></td>
-                                                                                                            <td style="padding:12px 15px;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#ebb009;font-weight:bold;">En attente de validation</td>
+                                                                                                            @if($subscription->statut === 'Succès')
+                                                                                                                <td style="padding:12px 15px;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#065f46;font-weight:bold;">Confirmé / Succès</td>
+                                                                                                            @else
+                                                                                                                <td style="padding:12px 15px;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#ebb009;font-weight:bold;">En attente de validation</td>
+                                                                                                            @endif
                                                                                                         </tr>
                                                                                                     </tbody>
                                                                                                 </table>
@@ -182,7 +195,11 @@
                                                                                         <tr>
                                                                                             <td align="left"
                                                                                                 style="font-size:14px;color:#555555;padding-top:15px;line-height:22px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                Vous trouverez en pièce jointe votre reçu provisoire au format PDF.
+                                                                                                @if($subscription->statut === 'Succès')
+                                                                                                    Vous trouverez en pièce jointe votre reçu officiel au format PDF.
+                                                                                                @else
+                                                                                                    Vous trouverez en pièce jointe votre reçu provisoire au format PDF.
+                                                                                                @endif
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>

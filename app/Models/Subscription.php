@@ -9,6 +9,19 @@ class Subscription extends Model
 {
     use HasFactory;
 
+    protected static function booted()
+    {
+        static::updated(function ($subscription) {
+            if ($subscription->wasChanged('statut') && $subscription->statut === 'Succès') {
+                try {
+                    \App\Jobs\ProcessSubscriptionReceipt::dispatch($subscription);
+                } catch (\Exception $e) {
+                    \Log::error("Failed to dispatch ProcessSubscriptionReceipt on status update to Succes: " . $e->getMessage());
+                }
+            }
+        });
+    }
+
     protected $fillable = [
         'user_id',
         'product_id',

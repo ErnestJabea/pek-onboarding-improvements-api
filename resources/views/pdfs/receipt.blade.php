@@ -74,7 +74,11 @@
 <body>
     <div class="header">
         <div class="logo"></div>
-        <div class="title">REÇU DE SOUSCRIPTION PROVISOIRE</div>
+        @if($subscription->statut === 'Succès')
+            <div class="title">REÇU DE SOUSCRIPTION OFFICIEL</div>
+        @else
+            <div class="title">REÇU DE SOUSCRIPTION PROVISOIRE</div>
+        @endif
     </div>
 
     <div class="details">
@@ -115,11 +119,21 @@
         <p><strong>Référence de transaction :</strong> {{ $subscription->reference_transaction }}</p>
         <p><strong>Moyen de paiement :</strong> {{ strtoupper(str_replace('_', ' ', $subscription->moyen_paiement)) }}
         </p>
-        <p><strong>Statut :</strong> <span class="status status-pending">EN ATTENTE DE VALIDATION</span></p>
+        <p><strong>Statut :</strong>
+            @if($subscription->statut === 'Succès')
+                <span class="status" style="background-color: #d1fae5; color: #065f46;">CONFIRMÉ / SUCCÈS</span>
+            @else
+                <span class="status status-pending">EN ATTENTE DE VALIDATION</span>
+            @endif
+        </p>
     </div>
 
     <div class="footer">
-        Ce document est un reçu provisoire généré automatiquement par la plateforme PEK.<br>
+        @if($subscription->statut === 'Succès')
+            Ce document est un reçu officiel généré automatiquement par la plateforme PEK.<br>
+        @else
+            Ce document est un reçu provisoire généré automatiquement par la plateforme PEK.<br>
+        @endif
         © 2026 Kori Asset Management - Tous droits réservés.
     </div>
 </body>

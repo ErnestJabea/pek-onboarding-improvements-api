@@ -29,8 +29,12 @@ class SubscriptionMail extends Mailable
      */
     public function envelope(): Envelope
     {
+        $subject = $this->subscription->statut === 'Succès'
+            ? 'Confirmation de votre souscription - PEK'
+            : 'Votre demande de souscription - PEK';
+
         return new Envelope(
-            subject: 'Subscription Mail',
+            subject: $subject,
         );
     }
 

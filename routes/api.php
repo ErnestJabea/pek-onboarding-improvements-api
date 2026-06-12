@@ -19,11 +19,6 @@ Route::get('/run-migrations', function() {
     return Artisan::output();
 });
 
-Route::get('/clear-cache', function() {
-    Artisan::call('optimize:clear');
-    return Artisan::output() ?: "Cache en ligne vide avec succes !";
-});
-
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
