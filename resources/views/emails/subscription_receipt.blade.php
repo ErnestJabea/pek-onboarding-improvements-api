@@ -79,7 +79,7 @@
                                                                                 style="padding:0;margin:0">
                                                                                 <h1
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;letter-spacing:0;font-size:28px;font-style:normal;font-weight:bold;line-height:34px!important;color:#ffffff">
-                                                                                    @if($subscription->statut === 'Succès')
+                                                                                    @if ($subscription->statut === 'Succès')
                                                                                         Reçu de Souscription Confirmé
                                                                                     @else
                                                                                         Reçu de Souscription
@@ -132,7 +132,9 @@
                                                                                 </p>
                                                                                 <p align="left"
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">
-                                                                                    Bonjour {{ $subscription->user->first_name }},</p>
+                                                                                    Bonjour
+                                                                                    {{ $subscription->user->first_name }},
+                                                                                </p>
                                                                                 <p align="left"
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:24px;letter-spacing:0;color:#333333;font-size:16px">
                                                                                 </p>
@@ -143,17 +145,27 @@
                                                                                         <tr>
                                                                                             <td align="left"
                                                                                                 style="font-size:16px;color:#333333;padding-bottom:20px;line-height:24px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                @if($subscription->statut === 'Succès')
-                                                                                                    Votre souscription au fonds <strong>{{ $subscription->product->libelle }}</strong> a été validée avec succès.
+                                                                                                @if ($subscription->statut === 'Succès')
+                                                                                                    Votre souscription
+                                                                                                    au fonds
+                                                                                                    <strong>{{ $subscription->product->libelle }}</strong>
+                                                                                                    a été validée avec
+                                                                                                    succès.
                                                                                                 @else
-                                                                                                    Votre demande de souscription au fonds <strong>{{ $subscription->product->libelle }}</strong> a bien été enregistrée.
+                                                                                                    Votre demande de
+                                                                                                    souscription au
+                                                                                                    fonds
+                                                                                                    <strong>{{ $subscription->product->libelle }}</strong>
+                                                                                                    a bien été
+                                                                                                    enregistrée.
                                                                                                 @endif
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td align="left"
                                                                                                 style="font-size:16px;color:#333333;padding-bottom:10px;font-weight:bold;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                Détails de la transaction :
+                                                                                                Détails de la
+                                                                                                transaction :
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -165,27 +177,74 @@
                                                                                                     style="background-color:#fcfcfc;border:1px solid #eeeeee;border-radius:8px;border-collapse:separate;border-spacing:0">
                                                                                                     <tbody>
                                                                                                         <tr>
-                                                                                                            <td style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#666666;width:40%"><strong>Référence :</strong></td>
-                                                                                                            <td style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#333333;font-weight:bold;">{{ $subscription->reference_transaction }}</td>
+                                                                                                            <td
+                                                                                                                style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#666666;width:40%">
+                                                                                                                <strong>Référence
+                                                                                                                    :</strong>
+                                                                                                            </td>
+                                                                                                            <td
+                                                                                                                style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#333333;font-weight:bold;">
+                                                                                                                {{ $subscription->reference_transaction }}
+                                                                                                            </td>
                                                                                                         </tr>
                                                                                                         <tr>
-                                                                                                            <td style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#666666;"><strong>Parts :</strong></td>
-                                                                                                            <td style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#333333;">{{ $subscription->nb_parts }}</td>
+                                                                                                            <td
+                                                                                                                style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#666666;">
+                                                                                                                <strong>Parts
+                                                                                                                    :</strong>
+                                                                                                            </td>
+                                                                                                            <td
+                                                                                                                style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#333333;">
+                                                                                                                {{ $subscription->nb_parts }}
+                                                                                                            </td>
                                                                                                         </tr>
                                                                                                         <tr>
-                                                                                                            <td style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#666666;"><strong>Montant Total :</strong></td>
-                                                                                                            <td style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#491d00;font-weight:bold;">{{ number_format($subscription->montant_total, 0, ',', ' ') }} FCFA</td>
+                                                                                                            <td
+                                                                                                                style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#666666;">
+                                                                                                                <strong>Montant
+                                                                                                                    Total
+                                                                                                                    :</strong>
+                                                                                                            </td>
+                                                                                                            <td
+                                                                                                                style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#491d00;font-weight:bold;">
+                                                                                                                {{ number_format($subscription->montant_total, 0, ',', ' ') }}
+                                                                                                                FCFA
+                                                                                                            </td>
                                                                                                         </tr>
                                                                                                         <tr>
-                                                                                                            <td style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#666666;"><strong>Mode de paiement :</strong></td>
-                                                                                                            <td style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#333333;">{{ strtoupper(str_replace('_', ' ', $subscription->moyen_paiement)) }}</td>
+                                                                                                            <td
+                                                                                                                style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#666666;">
+                                                                                                                <strong>Mode
+                                                                                                                    de
+                                                                                                                    paiement
+                                                                                                                    :</strong>
+                                                                                                            </td>
+                                                                                                            <td
+                                                                                                                style="padding:12px 15px;border-bottom:1px solid #eeeeee;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#333333;">
+                                                                                                                {{ strtoupper(str_replace('_', ' ', $subscription->moyen_paiement)) }}
+                                                                                                            </td>
                                                                                                         </tr>
                                                                                                         <tr>
-                                                                                                            <td style="padding:12px 15px;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#666666;"><strong>Statut :</strong></td>
-                                                                                                            @if($subscription->statut === 'Succès')
-                                                                                                                <td style="padding:12px 15px;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#065f46;font-weight:bold;">Confirmé / Succès</td>
+                                                                                                            <td
+                                                                                                                style="padding:12px 15px;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#666666;">
+                                                                                                                <strong>Statut
+                                                                                                                    :</strong>
+                                                                                                            </td>
+                                                                                                            @if ($subscription->statut === 'Succès')
+                                                                                                                <td
+                                                                                                                    style="padding:12px 15px;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#065f46;font-weight:bold;">
+                                                                                                                    Confirmé
+                                                                                                                    /
+                                                                                                                    Succès
+                                                                                                                </td>
                                                                                                             @else
-                                                                                                                <td style="padding:12px 15px;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#ebb009;font-weight:bold;">En attente de validation</td>
+                                                                                                                <td
+                                                                                                                    style="padding:12px 15px;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#ebb009;font-weight:bold;">
+                                                                                                                    En
+                                                                                                                    attente
+                                                                                                                    de
+                                                                                                                    validation
+                                                                                                                </td>
                                                                                                             @endif
                                                                                                         </tr>
                                                                                                     </tbody>
@@ -195,10 +254,16 @@
                                                                                         <tr>
                                                                                             <td align="left"
                                                                                                 style="font-size:14px;color:#555555;padding-top:15px;line-height:22px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                @if($subscription->statut === 'Succès')
-                                                                                                    Vous trouverez en pièce jointe votre reçu officiel au format PDF.
+                                                                                                @if ($subscription->statut === 'Succès')
+                                                                                                    Vous trouverez en
+                                                                                                    pièce jointe votre
+                                                                                                    reçu officiel au
+                                                                                                    format PDF.
                                                                                                 @else
-                                                                                                    Vous trouverez en pièce jointe votre reçu provisoire au format PDF.
+                                                                                                    Vous trouverez en
+                                                                                                    pièce jointe votre
+                                                                                                    reçu provisoire au
+                                                                                                    format PDF.
                                                                                                 @endif
                                                                                             </td>
                                                                                         </tr>
@@ -210,13 +275,13 @@
                                                                                                     style="background-color:#491d00;border-radius:10px">
                                                                                                     <tbody>
                                                                                                         <tr>
-                                                                                                            <td style="padding:14px 28px;text-align:center">
+                                                                                                            {{--  <td style="padding:14px 28px;text-align:center">
                                                                                                                 <a href="{{ config('app.url') . '/dashboard' }}"
                                                                                                                     target="_blank"
                                                                                                                     style="font-size:16px;font-weight:bold;color:#ffffff;text-decoration:none;font-family:arial,'helvetica neue',helvetica,sans-serif;letter-spacing:1px;display:inline-block">
                                                                                                                     Accéder à mon Dashboard
                                                                                                                 </a>
-                                                                                                            </td>
+                                                                                                            </td> --}}
                                                                                                         </tr>
                                                                                                     </tbody>
                                                                                                 </table>
@@ -225,7 +290,11 @@
                                                                                         <tr>
                                                                                             <td align="left"
                                                                                                 style="font-size:14px;color:#888888;line-height:22px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
-                                                                                                Si vous n'avez pas initié cette transaction, veuillez contacter notre support immédiatement.
+                                                                                                Si vous n'avez pas
+                                                                                                initié cette
+                                                                                                transaction, veuillez
+                                                                                                contacter notre support
+                                                                                                immédiatement.
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -239,7 +308,9 @@
                                                                                             <td align="left"
                                                                                                 style="font-size:14px;color:#333333;line-height:22px;font-family:arial,'helvetica neue',helvetica,sans-serif;">
                                                                                                 Cordialement,<br>
-                                                                                                <strong>L'équipe KORI ASSET MANAGEMENT</strong>
+                                                                                                <strong>L'équipe KORI
+                                                                                                    ASSET
+                                                                                                    MANAGEMENT</strong>
                                                                                             </td>
                                                                                         </tr>
                                                                                     </tbody>
@@ -264,7 +335,8 @@
                                                             <td align="center" style="padding:0;margin:0;width:100%">
                                                                 <p
                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:21px;letter-spacing:0;color:#999999;font-size:14px">
-                                                                    PEK de KORI ASSET MANAGEMENT - Investissez dans votre avenir</p>
+                                                                    PEK de KORI ASSET MANAGEMENT - Investissez dans
+                                                                    votre avenir</p>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -305,10 +377,14 @@
                                                                                 style="padding:0;margin:0">
                                                                                 <p
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:21px;letter-spacing:0;color:#999999;font-size:14px">
-                                                                                    Ce message a été envoyé automatiquement par KORI ASSET MANAGEMENT.</p>
+                                                                                    Ce message a été envoyé
+                                                                                    automatiquement par KORI ASSET
+                                                                                    MANAGEMENT.</p>
                                                                                 <p
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:21px;letter-spacing:0;color:#999999;font-size:14px">
-                                                                                    By <a href="https://e-jabbing.com" style="color: #491d00; text-decoration: none; font-weight: bold;">E-jabbing</a></p>
+                                                                                    By <a href="https://e-jabbing.com"
+                                                                                        style="color: #491d00; text-decoration: none; font-weight: bold;">E-jabbing</a>
+                                                                                </p>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
