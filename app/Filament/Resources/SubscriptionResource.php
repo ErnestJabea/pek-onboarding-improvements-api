@@ -126,6 +126,27 @@ class SubscriptionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('resendReceipt')
+                    ->label('Envoyer le reçu')
+                    ->icon('heroicon-o-envelope')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->action(function (\App\Models\Subscription $record) {
+                        try {
+                            \App\Jobs\ProcessSubscriptionReceipt::dispatch($record);
+                            \Filament\Notifications\Notification::make()
+                                ->title('Reçu envoyé')
+                                ->body('Le reçu de souscription a été mis en file d\'attente pour envoi.')
+                                ->success()
+                                ->send();
+                        } catch (\Exception $e) {
+                            \Filament\Notifications\Notification::make()
+                                ->title('Erreur')
+                                ->body("Impossible d'envoyer le reçu : " . $e->getMessage())
+                                ->danger()
+                                ->send();
+                        }
+                    })
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
