@@ -13,10 +13,23 @@ class Subscription extends Model
     {
         static::updated(function ($subscription) {
             if ($subscription->wasChanged('statut') && $subscription->statut === 'Succès') {
+                // 1. Dispatch confirmation email with receipt PDF
                 try {
                     \App\Jobs\ProcessSubscriptionReceipt::dispatch($subscription);
                 } catch (\Exception $e) {
                     \Log::error("Failed to dispatch ProcessSubscriptionReceipt on status update to Succes: " . $e->getMessage());
+                }
+
+                // 2. Create in-app notification
+                try {
+                    \App\Models\Notification::create([
+                        'user_id' => $subscription->user_id,
+                        'title' => 'Paiement Confirmé ✅',
+                        'body' => "Votre paiement pour {$subscription->product->libelle} a été validé. Vos parts ont été créditées.",
+                        'type' => 'success'
+                    ]);
+                } catch (\Exception $e) {
+                    \Log::error("Failed to create in-app notification on subscription validation: " . $e->getMessage());
                 }
             }
         });

@@ -110,12 +110,7 @@ class SubscriptionController extends Controller
         // Cas de simulation de test local
         if (str_starts_with($coolpayRef, 'MOCK_REF_')) {
             $subscription->update(['statut' => 'Succès']);
-            Notification::create([
-                'user_id' => $subscription->user_id,
-                'title' => 'Paiement Confirmé ✅ (Simulé)',
-                'body' => "Votre paiement de test pour {$subscription->product->libelle} a été validé.",
-                'type' => 'success'
-            ]);
+
 
             return response()->json([
                 'status' => 'success',
@@ -143,13 +138,7 @@ class SubscriptionController extends Controller
                 if ($status === 'success' || $status === 'successful') {
                     $subscription->update(['statut' => 'Succès']);
 
-                    // Create Notification
-                    Notification::create([
-                        'user_id' => $subscription->user_id,
-                        'title' => 'Paiement Confirmé ✅',
-                        'body' => "Votre paiement pour {$subscription->product->libelle} a été validé. Vos parts ont été créditées.",
-                        'type' => 'success'
-                    ]);
+
 
 
 

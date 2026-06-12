@@ -36,12 +36,7 @@ class WebhookController extends Controller
             if ($subscription) {
                 $subscription->update(['statut' => 'Succès']);
 
-                Notification::create([
-                    'user_id' => $subscription->user_id,
-                    'title' => 'Paiement Confirmé ✅',
-                    'body' => "Votre souscription au fonds {$subscription->product->libelle} a été validée avec succès.",
-                    'type' => 'success'
-                ]);
+
             }
         }
 
@@ -68,12 +63,7 @@ class WebhookController extends Controller
             if ($subscription && $subscription->statut !== 'Succès') {
                 $subscription->update(['statut' => 'Succès']);
 
-                Notification::create([
-                    'user_id' => $subscription->user_id,
-                    'title' => 'Paiement Confirmé ✅',
-                    'body' => "Votre paiement pour {$subscription->product->libelle} a été validé. Vos parts ont été créditées.",
-                    'type' => 'success'
-                ]);
+
 
                 \Log::info("Subscription {$appRef} marked as SUCCESS via Webhook.");
             }
