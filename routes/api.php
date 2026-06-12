@@ -64,6 +64,40 @@ Route::get('/diagnose-queue', function() {
     return response()->json($results);
 });
 
+Route::get('/run-queue', function() {
+    $results = [];
+    try {
+        if (!\Illuminate\Support\Facades\Schema::hasTable('jobs')) {
+            return response()->json(['message' => 'La table jobs n\'existe pas.']);
+        }
+        
+        $initialCount = \Illuminate\Support\Facades\DB::table('jobs')->count();
+        $results['initial_jobs_count'] = $initialCount;
+        
+        if ($initialCount === 0) {
+            return response()->json(['message' => 'La file d\'attente est vide.', 'jobs_processed' => 0]);
+        }
+        
+        $processed = 0;
+        $limit = 40; // Limite pour éviter les timeouts HTTP
+        
+        while ($processed < $limit && \Illuminate\Support\Facades\DB::table('jobs')->count() > 0) {
+            Artisan::call('queue:work', [
+                'connection' => 'database',
+                '--once' => true,
+            ]);
+            $processed++;
+        }
+        
+        $results['message'] = "Traitement effectue.";
+        $results['jobs_processed'] = $processed;
+        $results['remaining_jobs_count'] = \Illuminate\Support\Facades\DB::table('jobs')->count();
+    } catch (\Exception $e) {
+        $results['error'] = $e->getMessage();
+    }
+    return response()->json($results);
+});
+
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
