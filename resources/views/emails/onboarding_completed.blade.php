@@ -80,9 +80,9 @@
                                                                                 <h1
                                                                                     style="margin:0;font-family:arial,'helvetica neue',helvetica,sans-serif;letter-spacing:0;font-size:24px;font-style:normal;font-weight:bold;line-height:34px!important;color:#ffffff">
                                                                                     @if ($type === 'client')
-                                                                                        Onboarding Complété ! 🎉
+                                                                                        Onboarding Complété !
                                                                                     @else
-                                                                                        Nouveau Dossier d'Onboarding 📁
+                                                                                        Nouveau Dossier d'Onboarding
                                                                                     @endif
                                                                                 </h1>
                                                                             </td>
