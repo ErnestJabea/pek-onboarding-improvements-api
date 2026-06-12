@@ -41,7 +41,7 @@ Route::get('/diagnose-queue', function() {
         // Count failed jobs
         if (\Illuminate\Support\Facades\Schema::hasTable('failed_jobs')) {
             $results['failed_jobs_count'] = \Illuminate\Support\Facades\DB::table('failed_jobs')->count();
-            $results['failed_jobs_sample'] = \Illuminate\Support\Facades\DB::table('failed_jobs')->latest()->limit(5)->get()->toArray();
+            $results['failed_jobs_sample'] = \Illuminate\Support\Facades\DB::table('failed_jobs')->orderBy('id', 'desc')->limit(5)->get()->toArray();
         } else {
             $results['failed_jobs_table'] = "Table 'failed_jobs' does not exist.";
         }
