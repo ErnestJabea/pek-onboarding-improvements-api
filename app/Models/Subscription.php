@@ -11,21 +11,24 @@ class Subscription extends Model
 
     protected static function booted()
     {
-        static::updated(function ($subscription) {
-            if ($subscription->wasChanged('statut') && $subscription->statut === 'Succès') {
+        static::saved(function ($subscription) {
+            $isCreatedAsSuccess = $subscription->wasRecentlyCreated && $subscription->statut === 'Succès';
+            $isUpdatedToSuccess = !$subscription->wasRecentlyCreated && $subscription->wasChanged('statut') && $subscription->statut === 'Succès';
+
+            if ($isCreatedAsSuccess || $isUpdatedToSuccess) {
                 // 1. Dispatch confirmation email with receipt PDF
                 try {
                     \App\Jobs\ProcessSubscriptionReceipt::dispatch($subscription);
                 } catch (\Exception $e) {
-                    \Log::error("Failed to dispatch ProcessSubscriptionReceipt on status update to Succes: " . $e->getMessage());
+                    \Log::error("Failed to dispatch ProcessSubscriptionReceipt on status update/create to Succes: " . $e->getMessage());
                 }
 
                 // 2. Create in-app notification
                 try {
                     \App\Models\Notification::create([
                         'user_id' => $subscription->user_id,
-                        'title' => 'Paiement Confirmé ✅',
-                        'body' => "Votre paiement pour {$subscription->product->libelle} a été validé. Vos parts ont été créditées.",
+                        'title' => 'Souscription Validée ✅',
+                        'body' => "Votre souscription pour {$subscription->product->libelle} a été validée avec succès. Vos parts ont été créditées.",
                         'type' => 'success'
                     ]);
                 } catch (\Exception $e) {

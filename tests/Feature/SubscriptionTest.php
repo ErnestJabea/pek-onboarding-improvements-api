@@ -28,6 +28,12 @@ class SubscriptionTest extends TestCase
             'password' => bcrypt('password'),
         ]);
 
+        $this->user->onboardingSession()->create([
+            'status' => 'validated',
+            'current_step' => 'completed',
+            'payload' => [],
+        ]);
+
         $this->product = Product::create([
             'libelle' => 'FCP Kori Sérénité',
             'description' => 'Fonds de test',
@@ -100,5 +106,58 @@ class SubscriptionTest extends TestCase
 
         $response->assertStatus(422);
         $response->assertJsonPath('message', 'Le montant ou le nombre de parts est inférieur au minimum de souscription requis (1 part).');
+    }
+
+    public function test_cannot_subscribe_without_completed_onboarding(): void
+    {
+        $uncompletedUser = User::create([
+            'first_name' => 'Jane',
+            'last_name' => 'Doe',
+            'email' => 'jane@example.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $response = $this->actingAs($uncompletedUser)
+            ->postJson('/api/subscriptions', [
+                'product_id' => $this->product->id,
+                'nb_parts' => 1.0,
+                'moyen_paiement' => 'orange_money',
+            ]);
+
+        $response->assertStatus(403);
+        $response->assertJsonPath('message', 'Vous devez d\'abord compléter votre dossier d\'onboarding avant de pouvoir effectuer une souscription.');
+    }
+
+    public function test_transition_to_success_creates_notification_and_dispatches_email(): void
+    {
+        \Illuminate\Support\Facades\Queue::fake();
+
+        $subscription = Subscription::create([
+            'user_id' => $this->user->id,
+            'product_id' => $this->product->id,
+            'nb_parts' => 1.0,
+            'prix_unitaire' => $this->product->vl,
+            'montant_total' => $this->product->vl,
+            'moyen_paiement' => 'orange_money',
+            'statut' => 'En attente',
+            'reference_transaction' => 'FCP-TEST123',
+        ]);
+
+        $this->assertDatabaseMissing('notifications', [
+            'user_id' => $this->user->id,
+            'title' => 'Souscription Validée ✅',
+        ]);
+
+        $subscription->update(['statut' => 'Succès']);
+
+        $this->assertDatabaseHas('notifications', [
+            'user_id' => $this->user->id,
+            'title' => 'Souscription Validée ✅',
+            'body' => "Votre souscription pour {$this->product->libelle} a été validée avec succès. Vos parts ont été créditées.",
+        ]);
+
+        \Illuminate\Support\Facades\Queue::assertPushed(\App\Jobs\ProcessSubscriptionReceipt::class, function ($job) use ($subscription) {
+            return $job->subscription->id === $subscription->id;
+        });
     }
 }

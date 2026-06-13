@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Storage;
 
 class PdfDownloadController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = auth()->user();
+            if (!$user || !($user->hasRole('super_admin') || $user->role === 'admin')) {
+                abort(403, "Vous n'avez pas l'autorisation d'accéder à ce document.");
+            }
+            return $next($request);
+        });
+    }
     /**
      * Télécharger un PDF d'onboarding depuis le backoffice.
      *

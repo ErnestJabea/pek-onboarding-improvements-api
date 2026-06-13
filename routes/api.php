@@ -125,6 +125,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/notifications', function (Request $request) {
         return $request->user()->notifications()->orderBy('created_at', 'desc')->get();
     });
+    Route::post('/notifications/read-all', function (Request $request) {
+        $request->user()->notifications()->whereNull('read_at')->update(['read_at' => now()]);
+        return response()->json(['message' => 'Toutes les notifications ont été marquées comme lues.']);
+    });
     Route::get('/subscriptions', [SubscriptionController::class, 'index']);
     Route::post('/subscriptions', [SubscriptionController::class, 'store']);
     Route::post('/subscriptions/{id}/check-status', [SubscriptionController::class, 'checkCoolPayStatus']);

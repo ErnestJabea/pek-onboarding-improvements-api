@@ -19,6 +19,10 @@ class SubscriptionController extends Controller
 {
     public function store(Request $request)
     {
+        if (!Auth::user()->onboarding_completed) {
+            return response()->json(['message' => 'Vous devez d\'abord compléter votre dossier d\'onboarding avant de pouvoir effectuer une souscription.'], 403);
+        }
+
         Stripe::setApiKey(config('services.stripe.secret') ?? env('STRIPE_SECRET'));
         $request->validate([
             'product_id' => 'required|exists:products,id',
@@ -44,7 +48,7 @@ class SubscriptionController extends Controller
             'product_id' => $product->id,
             'nb_parts' => $request->nb_parts,
             'prix_unitaire' => $product->vl,
-            'montant_total' => $montant_total,
+            'montant_total' => $final_amount,
             'moyen_paiement' => $request->moyen_paiement,
             'statut' => 'En attente',
             'reference_transaction' => 'FCP-' . strtoupper(bin2hex(random_bytes(4))),

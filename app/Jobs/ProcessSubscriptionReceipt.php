@@ -16,7 +16,7 @@ class ProcessSubscriptionReceipt implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $subscription;
+    public $subscription;
 
     public function __construct(Subscription $subscription)
     {

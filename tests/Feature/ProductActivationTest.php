@@ -48,6 +48,12 @@ class ProductActivationTest extends TestCase
             'password' => bcrypt('password'),
         ]);
 
+        $user->onboardingSession()->create([
+            'status' => 'validated',
+            'current_step' => 'completed',
+            'payload' => [],
+        ]);
+
         $inactiveProduct = Product::create([
             'libelle' => 'Fonds Inactif',
             'description' => 'Un fonds inactif',
