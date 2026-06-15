@@ -108,7 +108,7 @@ class SubscriptionTest extends TestCase
         $response->assertJsonPath('message', 'Le montant ou le nombre de parts est inférieur au minimum de souscription requis (1 part).');
     }
 
-    public function test_cannot_subscribe_without_completed_onboarding(): void
+    public function test_cannot_subscribe_more_than_50k_without_validated_onboarding(): void
     {
         $uncompletedUser = User::create([
             'first_name' => 'Jane',
@@ -117,6 +117,28 @@ class SubscriptionTest extends TestCase
             'password' => bcrypt('password'),
         ]);
 
+        // Try to subscribe to 6 parts (6 * 10,000 = 60,000 > 50,000)
+        $response = $this->actingAs($uncompletedUser)
+            ->postJson('/api/subscriptions', [
+                'product_id' => $this->product->id,
+                'nb_parts' => 6.0,
+                'moyen_paiement' => 'orange_money',
+            ]);
+
+        $response->assertStatus(403);
+        $response->assertJsonPath('message', 'Pour finaliser votre souscription de plus de 50 000 FCFA, vous devez fournir les informations restantes qui vous ont été demandées par mail.');
+    }
+
+    public function test_can_subscribe_less_than_50k_without_validated_onboarding_but_gets_warning(): void
+    {
+        $uncompletedUser = User::create([
+            'first_name' => 'Jane',
+            'last_name' => 'Doe',
+            'email' => 'jane@example.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        // Try to subscribe to 1 part (1 * 10,000 = 10,000 <= 50,000)
         $response = $this->actingAs($uncompletedUser)
             ->postJson('/api/subscriptions', [
                 'product_id' => $this->product->id,
@@ -124,8 +146,25 @@ class SubscriptionTest extends TestCase
                 'moyen_paiement' => 'orange_money',
             ]);
 
-        $response->assertStatus(403);
-        $response->assertJsonPath('message', 'Vous devez d\'abord compléter votre dossier d\'onboarding avant de pouvoir effectuer une souscription.');
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('notifications', [
+            'user_id' => $uncompletedUser->id,
+            'title' => '⚠️ Action requise pour validation',
+            'type' => 'warning'
+        ]);
+    }
+
+    public function test_can_subscribe_more_than_50k_with_validated_onboarding(): void
+    {
+        // Try to subscribe to 6 parts (6 * 10,000 = 60,000 > 50,000) with $this->user (validated in setUp)
+        $response = $this->actingAs($this->user)
+            ->postJson('/api/subscriptions', [
+                'product_id' => $this->product->id,
+                'nb_parts' => 6.0,
+                'moyen_paiement' => 'orange_money',
+            ]);
+
+        $response->assertStatus(200);
     }
 
     public function test_transition_to_success_creates_notification_and_dispatches_email(): void

@@ -19,10 +19,6 @@ class SubscriptionController extends Controller
 {
     public function store(Request $request)
     {
-        if (!Auth::user()->onboarding_completed) {
-            return response()->json(['message' => 'Vous devez d\'abord compléter votre dossier d\'onboarding avant de pouvoir effectuer une souscription.'], 403);
-        }
-
         Stripe::setApiKey(config('services.stripe.secret') ?? env('STRIPE_SECRET'));
         $request->validate([
             'product_id' => 'required|exists:products,id',
@@ -37,6 +33,17 @@ class SubscriptionController extends Controller
         }
         $montant_total = $request->montant_total ?? ($request->nb_parts * $product->vl);
         $final_amount = $montant_total + ($montant_total * 0.01);
+
+        // Check onboarding status for 50k rule
+        $onboardingStatus = Auth::user()->onboarding_status;
+
+        if ($montant_total > 50000) {
+            if ($onboardingStatus !== 'validated') {
+                return response()->json([
+                    'message' => 'Pour finaliser votre souscription de plus de 50 000 FCFA, vous devez fournir les informations restantes qui vous ont été demandées par mail.'
+                ], 403);
+            }
+        }
 
         // Le minimum de placement est d'une part (valeur liquidative actuelle)
         if ($montant_total < ($product->vl - 0.01) || $request->nb_parts < 0.9999) {
@@ -68,6 +75,16 @@ class SubscriptionController extends Controller
             'body' => "Votre demande de souscription pour {$product->libelle} ({$subscription->reference_transaction}) est en attente.",
             'type' => 'subscription'
         ]);
+
+        // If onboarding is not validated and subscription is accepted (which means it's <= 50k), send a warning notification
+        if ($onboardingStatus !== 'validated') {
+            Notification::create([
+                'user_id' => Auth::id(),
+                'title' => '⚠️ Action requise pour validation',
+                'body' => "Votre souscription pour {$product->libelle} ({$subscription->reference_transaction}) ne sera validée définitivement que si et seulement si vous renseignez les informations qui vous sont demandées par mail.",
+                'type' => 'warning'
+            ]);
+        }
 
         // 4. Dispatch Background Job (Emails + PDF)
         \App\Jobs\ProcessSubscriptionReceipt::dispatch($subscription);

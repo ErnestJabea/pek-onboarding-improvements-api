@@ -159,6 +159,12 @@
                                                                                                     a bien été
                                                                                                     enregistrée.
                                                                                                 @endif
+
+                                                                                                @if ($subscription->user->onboarding_status !== 'validated')
+                                                                                                    <div style="margin-top:15px;background-color:#fffbeb;border:1px solid #fef3c7;border-radius:8px;padding:15px;font-family:arial,'helvetica neue',helvetica,sans-serif;font-size:14px;color:#b45309;line-height:20px;font-weight:bold;">
+                                                                                                        ⚠️ Attention : Votre souscription a bien été enregistrée mais elle ne sera validée définitivement que si et seulement si vous renseignez les informations qui vous sont demandées par mail pour finaliser votre dossier d'onboarding.
+                                                                                                    </div>
+                                                                                                @endif
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
