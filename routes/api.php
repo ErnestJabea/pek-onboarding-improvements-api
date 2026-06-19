@@ -122,6 +122,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard-stats', [AuthController::class, 'dashboardStats']);
     Route::post('/update-profile', [AuthController::class, 'updateProfile']);
     Route::post('/update-password', [AuthController::class, 'updatePassword']);
+    Route::post('/reset-temp-password', [AuthController::class, 'resetTempPassword']);
     Route::get('/notifications', function (Request $request) {
         return $request->user()->notifications()->orderBy('created_at', 'desc')->get();
     });

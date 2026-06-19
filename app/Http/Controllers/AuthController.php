@@ -134,6 +134,7 @@ class AuthController extends Controller
             'access_token' => 'cookie_session',
             'token_type' => 'Bearer',
             'user' => $user,
+            'requires_password_change' => (bool)$user->has_temp_password,
         ])->withCookie($cookie);
     }
 
@@ -154,25 +155,29 @@ class AuthController extends Controller
             return response()->json(['message' => 'Compte non vérifié.'], 403);
         }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        // Delete old OTPs
+        OtpCode::where('email', $user->email)->delete();
 
-        $cookie = cookie(
-            'auth_token',
-            $token,
-            1440, // 24 heures
-            '/',
-            null,
-            $request->isSecure(),
-            true, // HttpOnly
-            false,
-            app()->environment('local') ? 'Lax' : 'Strict'
-        );
+        // Generate OTP
+        $otpCode = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+        OtpCode::create([
+            'email' => $user->email,
+            'code' => $otpCode,
+            'expires_at' => Carbon::now()->addMinutes(10),
+        ]);
 
-        return response()->json([
-            'access_token' => 'cookie_session',
-            'token_type' => 'Bearer',
-            'user' => $user,
-        ])->withCookie($cookie);
+        // Send Email
+        Mail::to($user->email)->send(new OtpMail($otpCode, $user, 'login'));
+
+        $responseData = [
+            'requires_mfa' => true,
+            'email' => $user->email,
+            'message' => 'Un code de vérification MFA a été envoyé à votre adresse email.',
+        ];
+        if (config('app.env') !== 'production' && config('app.debug')) {
+            $responseData['otp_debug'] = $otpCode;
+        }
+        return response()->json($responseData);
     }
 
     public function resendOtp(Request $request)
@@ -199,7 +204,8 @@ class AuthController extends Controller
         ]);
 
         // Send Email
-        Mail::to($user->email)->send(new OtpMail($otpCode, $user));
+        $type = $user->email_verified_at ? 'login' : 'register';
+        Mail::to($user->email)->send(new OtpMail($otpCode, $user, $type));
 
         $responseData = [
             'message' => 'Un nouveau code a été envoyé.',
@@ -213,6 +219,12 @@ class AuthController extends Controller
     public function updateProfile(Request $request)
     {
         $user = $request->user();
+
+        if ($user->onboarding_status === 'validated') {
+            return response()->json([
+                'message' => 'Votre profil est validé par la conformité. Les modifications de profil doivent être soumises au support client.'
+            ], 403);
+        }
 
         $request->validate([
             'first_name' => 'required|string|max:255',
@@ -277,12 +289,34 @@ class AuthController extends Controller
 
         $user->password = Hash::make($tempPassword);
         $user->email_verified_at = $user->email_verified_at ?? now();
+        $user->has_temp_password = true;
         $user->save();
 
         Mail::to($user->email)->send(new ResetPasswordMail($tempPassword, $user));
 
-        return response()->json([
+        $responseData = [
             'message' => 'Un email avec votre nouveau mot de passe vous a été envoyé.',
+        ];
+        if (config('app.env') !== 'production' && config('app.debug')) {
+            $responseData['temp_password_debug'] = $tempPassword;
+        }
+        return response()->json($responseData);
+    }
+
+    public function resetTempPassword(Request $request)
+    {
+        $request->validate([
+            'new_password' => 'required|string|min:8',
+        ]);
+
+        $user = $request->user();
+        $user->password = Hash::make($request->new_password);
+        $user->has_temp_password = false;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Votre mot de passe a été mis à jour avec succès.',
+            'user' => $user
         ]);
     }
 

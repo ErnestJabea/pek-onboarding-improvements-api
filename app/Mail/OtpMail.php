@@ -15,14 +15,16 @@ class OtpMail extends Mailable
 
     public $otpCode;
     public $user;
+    public $type;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($otpCode, $user)
+    public function __construct($otpCode, $user, $type = 'register')
     {
         $this->otpCode = $otpCode;
         $this->user = $user;
+        $this->type = $type;
     }
 
     /**
@@ -45,6 +47,7 @@ class OtpMail extends Mailable
             with: [
                 'code' => $this->otpCode,
                 'name' => $this->user->first_name . ' ' . $this->user->last_name,
+                'type' => $this->type,
             ],
         );
     }

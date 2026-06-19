@@ -140,11 +140,11 @@
                                                                                         <tr>
                                                                                             <td align="center"
                                                                                                 style="font-size:16px;color:#555555;padding-bottom:20px">
-                                                                                                <strong>Utilisez le code
-                                                                                                    ci-dessous pour
-                                                                                                    finaliser votre
-                                                                                                    inscription
-                                                                                                    :</strong>
+                                                                                                @if (($type ?? 'register') === 'login')
+                                                                                                    <strong>Utilisez le code ci-dessous pour vous connecter à votre compte PEK :</strong>
+                                                                                                @else
+                                                                                                    <strong>Utilisez le code ci-dessous pour finaliser votre inscription :</strong>
+                                                                                                @endif
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
@@ -189,13 +189,11 @@
                                                                                         <tr>
                                                                                             <td align="center"
                                                                                                 style="font-size:12px;color:#999999;line-height:18px">
-                                                                                                <p>Vous recevez cet
-                                                                                                    email car une
-                                                                                                    inscription a
-                                                                                                    été effectuée avec
-                                                                                                    cette adresse email
-                                                                                                    sur la plateforme
-                                                                                                    PEK.</p>
+                                                                                                @if (($type ?? 'register') === 'login')
+                                                                                                    <p>Vous recevez cet email car une tentative de connexion a été effectuée avec cette adresse email sur la plateforme PEK.</p>
+                                                                                                @else
+                                                                                                    <p>Vous recevez cet email car une inscription a été effectuée avec cette adresse email sur la plateforme PEK.</p>
+                                                                                                @endif
                                                                                             </td>
                                                                                         </tr>
                                                                                     </tbody>
