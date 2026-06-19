@@ -21,12 +21,12 @@ class UserResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return 'Administrateur';
+        return 'Utilisateur';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'Administrateurs';
+        return 'Utilisateurs';
     }
 
     public static function form(Form $form): Form
@@ -53,6 +53,19 @@ class UserResource extends Resource
                     ->password()
                     ->required(fn (string $context): bool => $context === 'create')
                     ->dehydrated(fn ($state) => filled($state)),
+                Forms\Components\Select::make('role')
+                    ->label('Rôle Système')
+                    ->options([
+                        'admin' => 'Administrateur',
+                        'client' => 'Client',
+                    ])
+                    ->required()
+                    ->default('client'),
+                Forms\Components\Select::make('roles')
+                    ->label('Rôles de sécurité (Permissions)')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload(),
             ]);
     }
 
@@ -72,6 +85,20 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('phone')
                     ->label(__('messages.phone'))
                     ->searchable(),
+                Tables\Columns\TextColumn::make('role')
+                    ->label('Rôle')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'admin' => 'success',
+                        'client' => 'info',
+                        default => 'gray',
+                    })
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->label('Rôles Shield')
+                    ->badge()
+                    ->color('warning')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('messages.created_at'))
                     ->dateTime()
@@ -83,7 +110,12 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('role')
+                    ->label('Filtrer par rôle')
+                    ->options([
+                        'admin' => 'Administrateur',
+                        'client' => 'Client',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
